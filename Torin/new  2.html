@@ -49,7 +49,9 @@
  
 	// let the fall be droppable, accepting the gallery items
     $fall17.droppable({
-      accept: "#gallery > li, #winter17 li, #spring17 li",
+      /*accept: "#gallery > li, #winter17 li, #spring17 li",*/
+	  /*accept: "#gallery .fall, #winter17 > .fall, #spring17 > .fall",*/
+	  accept: ".fall",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
         deleteImageFall17( ui.draggable );
@@ -58,7 +60,8 @@
  
 	// let the winter be droppable, accepting the gallery items
     $winter17.droppable({
-      accept: "#gallery > li, #fall17 li, #spring17 li",
+      /*accept: "#gallery .winter, #fall17 li, #spring17 li",*/
+	  accept: ".winter",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
         deleteImageWinter17( ui.draggable );
@@ -67,7 +70,8 @@
  
 	// let the spring be droppable, accepting the gallery items
     $spring17.droppable({
-      accept: "#gallery > li, #fall17 li, #winter17 li",
+      /*accept: "#gallery .spring, #fall17 li, #winter17 li",*/
+	  accept: ".spring",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
         deleteImageSpring17( ui.draggable );
