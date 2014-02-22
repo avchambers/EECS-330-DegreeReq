@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Droppable - Simple photo manager</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <link href="css/ui-lightness/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <style>
+  #gallery { float: left; width: 47%; min-height: 35em; }
+  .gallery.custom-state-active { background: #eee; }
+  .gallery li { float: left; width: 175px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+  .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
+  .gallery li a { float: right; }
+  .gallery li a.ui-icon-zoomin { float: left; }
+  .gallery li img { width: 100%; cursor: move; }
+  
+  #spring17, #winter17, #fall17 { float: right; width: 15%; min-height: 35em; padding: 1%; }
+  #spring17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+  #spring17 h4 .ui-icon { float: left; }
+ 
+  #winter17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+  #winter17 h4 .ui-icon { float: left; }
+  
+  #fall17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+  #fall17 h4 .ui-icon { float: left; }
+  </style>
+  
+  <script>
+  $(function() {
+  // there's the gallery and the trash
+    var $gallery = $( "#gallery" ),
+		$fall17 = $( "#fall17" ),
+		$winter17 = $( "#winter17" ),
+		$spring17 = $( "#spring17" );
+ 
+    // let the gallery items be draggable
+    $( "li", $gallery ).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move"
+    });
+ 
+	// let the fall be droppable, accepting the gallery items
+    $fall17.droppable({
+      accept: "#gallery > li",
+      activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+        deleteImageFall17( ui.draggable );
+      }
+    });
+ 
+	// let the winter be droppable, accepting the gallery items
+    $winter17.droppable({
+      accept: "#gallery > li",
+      activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+        deleteImageWinter17( ui.draggable );
+      }
+    });
+ 
+	// let the spring be droppable, accepting the gallery items
+    $spring17.droppable({
+      accept: "#gallery > li",
+      activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+        deleteImageSpring17( ui.draggable );
+      }
+    }); 
+	
+    // let the gallery be droppable as well, accepting items from the trash
+    $gallery.droppable({
+      accept:	"#winter17 li, #fall17 li, #spring17 li",
+      activeClass: "custom-state-active",
+      drop: function( event, ui ) {
+        recycleImage( ui.draggable );
+      }
+    });
+ 
+    // image deletion function
+    var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
+    function deleteImageWinter17( $item ) {
+      if ($item.hasClass("winter")) {
+		  $item.fadeOut(function() {
+			var $list = $( "ul", $winter17 ).length ?
+			  $( "ul", $winter17 ) :
+			  $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $winter17 );
+	 
+			$item.find( "a.ui-icon-trash" ).remove();
+			$item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+			  $item
+				.find( "img" )
+				  .animate({ height: "72px" });
+			});
+		  });
+		}
+    }
+	
+	function deleteImageFall17( $item ) {
+		if ($item.hasClass("fall")) { 
+		  $item.fadeOut(function() {
+			var $list = $( "ul", $fall17 ).length ?
+			  $( "ul", $fall17 ) :
+			  $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $fall17 );
+	 
+			$item.find( "a.ui-icon-trash" ).remove();
+			$item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+			  $item
+				.find( "img" )
+				  .animate({ height: "72px" });
+			});
+		  });
+		 }
+    }
+	
+	function deleteImageSpring17( $item ) {
+		if ($item.hasClass("spring")) {		
+			$item.fadeOut(function() {
+			var $list = $( "ul", $spring17 ).length ?
+			  $( "ul", $spring17 ) :
+			  $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $spring17 );
+	 
+			$item.find( "a.ui-icon-trash" ).remove();
+			$item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+			  $item
+				.find( "img" )
+				  .animate({ height: "72px" });
+			});
+		  });
+		}
+    }
+ 
+    // image recycle function
+    var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
+    function recycleImage( $item ) {
+      $item.fadeOut(function() {
+        $item
+          .find( "a.ui-icon-refresh" )
+            .remove()
+          .end()
+          .append( trash_icon )
+          .find( "img" )
+            .css( "height", "72px" )
+          .end()
+          .appendTo( $gallery )
+          .fadeIn();
+      });
+    }
+ 
+    // image preview function, demonstrating the ui.dialog used as a modal window
+    function viewLargerImage( $link ) {
+		var dia = $link.attr("id");
+		console.log(dia);
+		$(function() {
+		$(document.getElementById(dia)).dialog({ width: 750 });
+		})
+    }
+ 
+    // resolve the icons behavior with event delegation
+    $( "ul.gallery > li" ).click(function( event ) {
+      var $item = $( this ),
+        $target = $( event.target );
+ 
+      if ( $target.is( "a.ui-icon-trash" ) ) {
+        deleteImage( $item );
+      } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+        viewLargerImage( $target );
+      } else if ( $target.is( "a.ui-icon-refresh" ) ) {
+        recycleImage( $item );
+      }
+ 
+      return false;
+    });
+  });
+  </script>
+</head>
+<body>
+ 
+<div class="ui-widget ui-helper-clearfix">
+
+<div id="PHYS135-1" title="Physics 135-1: General Physics" style="display:none">
+		<p>This is the first of a three-quarter sequence intended primarily for science and engineering majors and premedical students. PHYSICS 135-1 covers classical mechanics. Topics covered include: Newton's Laws of motion, projectiles, relative motion, circular motion and centripetal force, conservation of energy, momentum and angular momentum, center of mass, moment of inertia, and Newton's Law of gravity.<br>
+		<br>
+		Prerequisites: Math 220-0, Math 224-0, Math 230-0 or equivalent</p>
+</div>		
+<div id="PHYS135-2" title="Physics 135-2: General Physics" style="display:none">
+		<p>This is the second course in a three-quarter physics sequence intended for science and engineering majors and premedical students. Topics covered in 135-2 include electric and magnetic fields, electrical conduction, DC and AC circuits, capacitance, induction, and time-varying fields.<br>
+		<br>
+		Prerequisites: Physics 135-1 or equivalent</p>
+</div>
+<div id="PHYS135-3" title="Physics 135-3: General Physics" style="display:none">
+		<p>Physics 135-3 is the third and final quarter of a calculus-based introductory physics course. Topics covered include mechanical waves, electromagnetic waves, geometric and wave optics, special relativity, and introductory concepts in quantum physics. It is intended for science majors, math majors, engineering majors, and premedical students.<br>
+		<br>
+		Prerequisites: Physics 135-1,2 or equivalent</p>
+</div>
+<div id="POLISCI201" title="Political Science 201: Introduction to Political Theory" style="display:none">
+		<p>How do we engage the world politically? What does it mean to think politically? Is it even possible to be thoughtful in politics? This course explores the structures through which we approach these questions intellectually and in everyday life, to provide a series of lenses that can be used to view what is going on in the political world. As a way of introducing classical (and non-classical) texts as they relate to politics in everyday life, each week approaches a different kind of political problem, a problem of political action and reflection. Our focus will be on looking for resources in these texts for thinking differently about the political world that surrounds us, all the way down to the concept of politics itself and what counts as political and non-political.<br>
+		<br>
+		Prerequisites: none</p>
+</div>
+<div id="MATH104" title="Mathematics 104: Introduction to Game Theory" style="display:none">
+		<p>Games and gameplay occupy a special cultural space. Considered the province of children, many games have intricate patterns and subtleties that render their analysis both interesting and non-trivial. This course will be an introduction to the combinatorial game theory of Berlekamp, Conway, and Guy, which can be applied to perfect information, turn-based games like Domineering and Hackenbush as well as real life games like Nim, Konane, Hey! That's my Fish!, and (the endgame stages of) go/weiqi/baduk. We'll study comparability and addition of games. This course is intended for non-science students seeking a gentle introduction to the subject. While there will be technical details from time to time, this will not require the prerequisites of a more advanced course. Familiarity with high school mathematics is assumed.<br>
+		<br>
+		Prerequisites: none</p>
+		</div>
+<div id="MATH336-1" title="Mathematics 336-1: Introduction to the Theory of Numbers" style="display:none">
+		<p>The integers: prime numbers and greatest common divisor, the fundamental theorem of arithmetic. Congruences: linear congruences, Chinese remainder theorem, applications. Special congruences: Wilson's theorem, Fermat's little theorem, pseudoprimes, Euler's theorem. Multiplicative functions: Euler phi function, perfect numbers, Mersenne primes. Primitive roots: order of an integer, existence of primitive roots; index arithmetic.<br>
+		<br>
+		Prerequisites: MATH 230</p>
+</div>
+<div id="MATH336-2" title="Mathematics 336-2: Introduction to Game Theory" style="display:none">
+		<p>Continuation of 336-1. Divisibility and primes, congruences, quadratic reciprocity, Diophantine problems. Additional topics in analytic and algebraic number theory.<br>
+		<br>
+		Prerequisites: MATH 336-1</p>
+</div>
+ 
+<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter">
+    <h5 class="ui-widget-header">Mathematics 104</h5>
+    <p>Introduction to Game Theory<br>
+		Winter 2017<br>
+		MWThF 3:30-4:50</p>
+    <a id="MATH104" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr fall">
+    <h5 class="ui-widget-header">Mathematics 336-1</h5>
+    <p>Introduction to Number Theory<br>
+		Fall 2017<br>
+		MWThF 11:00-11:50</p>
+    <a id="MATH336-1" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li> 
+ <li class="ui-widget-content ui-corner-tr winter">
+    <h5 class="ui-widget-header">Mathematics 336-2</h5>
+    <p>Introduction to the Theory of Numbers<br>
+		Winter 2017<br>
+		MWThF 11:00-11:50</p>
+    <a id="MATH336-2" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+<li class="ui-widget-content ui-corner-tr fall spring">
+    <h5 class="ui-widget-header">Physics 135-1</h5>
+    <p>General Physics<br><br>
+		Fall/Spring 2017<br>
+		MWThF 10:00-10:50</p>
+    <a id="PHYS135-1" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+<li class="ui-widget-content ui-corner-tr winter">
+    <h5 class="ui-widget-header">Physics 135-2</h5>
+    <p>General Physics<br><br>
+		Winter 2017<br>
+		MWThF 10:00-10:50</p>
+    <a id="PHYS135-2" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr spring">
+    <h5 class="ui-widget-header">Physics 135-3</h5>
+    <p>General Physics<br><br>
+		Spring 2017<br>
+		MWThF 10:00-10:50</p>
+    <a id="PHYS135-3" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr winter">
+    <h5 class="ui-widget-header">Political Science 201</h5>
+    <p>Introduction to Political Theory<br>
+		Winter 2017<br>
+		TTh 12:00-1:50</p>
+    <a id="POLISCI201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+</ul>
+ 
+<div id="spring17" class="ui-widget-content ui-state-default">
+  <h4 class="ui-widget-header">Spring 2017</h4>
+</div>
+<div id="winter17" class="ui-widget-content ui-state-default">
+  <h4 class="ui-widget-header">Winter 2017</h4>
+</div>
+<div id="fall17" class="ui-widget-content ui-state-default">
+  <h4 class="ui-widget-header">Fall 2017</h4>
+</div>
+ 
+</div>
+ 
+ 
+</body>
+</html>
