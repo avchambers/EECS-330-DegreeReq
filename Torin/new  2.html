@@ -193,20 +193,56 @@
     });
 	
 	$( "#toggle-fall17").click(function() {
+		var $fall;
 		$(this).toggleClass("inactive");
-		var $fall = $(".fall").not(".winter").not(".spring");
+		if ($("#toggle-winter17").hasClass("inactive")) {
+			if($("#toggle-spring17").hasClass("inactive")){
+				$fall = $(".fall");
+			}
+			else {
+				$fall = $(".fall").not(".spring");
+			}
+		} else if ($("#toggle-spring17").hasClass("inactive")) {
+			$fall = $(".fall").not(".winter");
+		} else {
+			$fall = $(".fall").not(".winter").not(".spring");
+		}
 		$fall.fadeToggle(400);
 		$("#fall17").fadeToggle(400);
 	});
 	$( "#toggle-winter17").click(function() {
+		var $winter;
 		$(this).toggleClass("inactive");
-		var $winter = $(".winter").not(".fall").not(".spring");
+		if ($("#toggle-fall17").hasClass("inactive")) {
+			if($("#toggle-spring17").hasClass("inactive")){
+				$winter = $(".winter");
+			}
+			else {
+				$winter = $(".winter").not(".spring");
+			}
+		} else if ($("#toggle-spring17").hasClass("inactive")) {
+			$winter = $(".winter").not(".fall");
+		} else {
+			$winter = $(".winter").not(".fall").not(".spring");
+		}
 		$winter.fadeToggle(400);
 		$("#winter17").fadeToggle(400);
 	});
 	$( "#toggle-spring17").click(function() {
+		var $spring;
 		$(this).toggleClass("inactive");
-		var $spring = $(".spring").not(".fall").not(".winter");
+		if ($("#toggle-fall17").hasClass("inactive")) {
+			if($("#toggle-winter17").hasClass("inactive")){
+				$spring = $(".spring");
+			}
+			else {
+				$spring = $(".spring").not(".winter");
+			}
+		} else if ($("#toggle-winter17").hasClass("inactive")) {
+			$spring = $(".spring").not(".fall");
+		} else {
+			$spring = $(".spring").not(".winter").not(".fall");
+		}
 		$spring.fadeToggle(400);
 		$("#spring17").fadeToggle(400);
 	});
@@ -325,7 +361,7 @@
     <a id="EECS110" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
   </li> 
- <li class="ui-widget-content ui-corner-tr fall winter spring core">
+ <li class="ui-widget-content ui-corner-tr fall winter core">
     <h5 class="ui-widget-header">EECS 111</h5>
     <p>Fundamentals of Programming I<br><br>
 		Fall/Winter 2017<br>
