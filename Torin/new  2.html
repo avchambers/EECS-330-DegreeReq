@@ -28,6 +28,13 @@
   
   .ui-icon-zoomin { cursor:pointer; }
   
+   body { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;}
+  .navigation { height: 6.5em;}
+  .page-header {width: 20%;}
+  .nav-right {float:right; width:47%;}
+  
+  .inactive { background:lightgrey; border-color:lightgrey;}
+  
   </style>
   
   <script>
@@ -184,10 +191,42 @@
  
       return false;
     });
+	
+	$( "#toggle-fall17").click(function() {
+		$(this).toggleClass("inactive");
+		var $fall = $(".fall").not(".winter").not(".spring");
+		$fall.fadeToggle(400);
+		$("#fall17").fadeToggle(400);
+	});
+	$( "#toggle-winter17").click(function() {
+		$(this).toggleClass("inactive");
+		var $winter = $(".winter").not(".fall").not(".spring");
+		$winter.fadeToggle(400);
+		$("#winter17").fadeToggle(400);
+	});
+	$( "#toggle-spring17").click(function() {
+		$(this).toggleClass("inactive");
+		var $spring = $(".spring").not(".fall").not(".winter");
+		$spring.fadeToggle(400);
+		$("#spring17").fadeToggle(400);
+	});
+	
   });
   </script>
 </head>
 <body>
+ 
+ <div class="navigation ui-widget ui-helper-clearfix">
+	<span class="nav-left">
+		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
+		<button class="ui-button ui-widget-header">View Degree Progress</button>
+	</span>
+	<span class="nav-right">
+		<button class="ui-button ui-widget-header" id="toggle-fall17">Fall 2017</button>
+		<button class="ui-button ui-widget-header" id="toggle-winter17">Winter 2017</button>
+		<button class="ui-button ui-widget-header" id="toggle-spring17">Spring 2017</button>
+	</span>
+</div>
  
 <div class="ui-widget ui-helper-clearfix">
 
