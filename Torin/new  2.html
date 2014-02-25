@@ -34,6 +34,7 @@
   .nav-right {float:right; width:47%;}
   
   .inactive { background:lightgrey; border-color:lightgrey;}
+  .toggles {margin-left:3em;}
   
   </style>
   
@@ -247,6 +248,22 @@
 		$("#spring17").fadeToggle(400);
 	});
 	
+	$(function(){ 
+		var availableSubjects = [
+			"Art History",
+			"Chemistry",
+			"Economics",
+			"EECS",
+			"English",
+			"Mathematics",
+			"Political Science",
+			"Statistics"
+		];
+		$("#subject").autocomplete({
+			source: availableSubjects
+		});
+	});
+	
   });
   </script>
 </head>
@@ -258,9 +275,13 @@
 		<button class="ui-button ui-widget-header">View Degree Progress</button>
 	</span>
 	<span class="nav-right">
-		<button class="ui-button ui-widget-header" id="toggle-fall17">Fall 2017</button>
-		<button class="ui-button ui-widget-header" id="toggle-winter17">Winter 2017</button>
-		<button class="ui-button ui-widget-header" id="toggle-spring17">Spring 2017</button>
+		<span class="ui-widget"><label for="subject">Select Subject</label><input id="subject"></span>
+		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
+		<span class="toggles">
+			<button class="ui-button ui-widget-header" id="toggle-fall17">Fall 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-winter17">Winter 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-spring17">Spring 2017</button>
+		</span>
 	</span>
 </div>
  
