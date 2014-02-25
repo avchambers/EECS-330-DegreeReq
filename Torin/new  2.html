@@ -62,7 +62,7 @@
 	  accept: ".fall",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
-        deleteImageFall17( ui.draggable );
+        addClassFall17( ui.draggable );
       }
     });
  
@@ -72,7 +72,7 @@
 	  accept: ".winter",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
-        deleteImageWinter17( ui.draggable );
+        addClassWinter17( ui.draggable );
       }
     });
  
@@ -82,7 +82,7 @@
 	  accept: ".spring",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
-        deleteImageSpring17( ui.draggable );
+        addClassSpring17( ui.draggable );
       }
     }); 
 	
@@ -98,7 +98,7 @@
     // image deletion function
     //var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
 	var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
-    function deleteImageWinter17( $item ) {
+    function addClassWinter17( $item ) {
       if ($item.hasClass("winter")) {
 		  $item.fadeOut(function() {
 			var $list = $( "ul", $winter17 ).length ?
@@ -117,7 +117,7 @@
 		}
     }
 	
-	function deleteImageFall17( $item ) {
+	function addClassFall17( $item ) {
 		if ($item.hasClass("fall")) { 
 		  $item.fadeOut(function() {
 			var $list = $( "ul", $fall17 ).length ?
@@ -136,7 +136,7 @@
 		 }
     }
 	
-	function deleteImageSpring17( $item ) {
+	function addClassSpring17( $item ) {
 		if ($item.hasClass("spring")) {		
 			$item.fadeOut(function() {
 			var $list = $( "ul", $spring17 ).length ?
