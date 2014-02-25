@@ -272,6 +272,12 @@
 		});
 	});
 	
+	/*
+	Moves the left side of the page (the quarterly schedules) with the window when you scroll down
+	$(window).scroll(function(){
+		$(".quarter").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
+	});
+	*/
   });
   </script>
 </head>
@@ -440,13 +446,13 @@
   </li>
 </ul>
 
-<div id="fall17" class="ui-widget-content ui-state-default">
+<div id="fall17" class="ui-widget-content ui-state-default quarter">
   <h4 class="ui-widget-header">Fall 2017</h4>
 </div>
-<div id="winter17" class="ui-widget-content ui-state-default">
+<div id="winter17" class="ui-widget-content ui-state-default quarter">
   <h4 class="ui-widget-header">Winter 2017</h4>
 </div> 
-<div id="spring17" class="ui-widget-content ui-state-default">
+<div id="spring17" class="ui-widget-content ui-state-default quarter">
   <h4 class="ui-widget-header">Spring 2017</h4>
 </div>
 
