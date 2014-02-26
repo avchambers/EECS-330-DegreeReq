@@ -274,7 +274,7 @@
 			select: function(event, ui)	{
 						var oldSubject = $("#subject-header").html();
 						var oldSubjectCode = oldSubject;
-						var existingCourses = $("li h5");
+						var existingCourses = $("li h5", $gallery);
 						var subject = ui.item.value;
 						var subjectCode = subject;
 						switch(subject) {
