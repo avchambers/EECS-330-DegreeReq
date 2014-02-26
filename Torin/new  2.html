@@ -29,13 +29,15 @@
   .ui-icon-zoomin { cursor:pointer; }
   
    body { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;}
-  .navigation { height: 6.5em;}
-  .page-header {width: 20%;}
+  .navigation { height: 6.5em; margin-bottom:.5em;}
+  .page-header {width: 52%;}
+  .nav-left {float:left; width:53%;}
   .nav-right {float:right; width:47%;}
   
   .inactive { background:lightgrey; border-color:lightgrey;}
-  .toggles {margin-left:3em;}
+  .toggles {margin-left:9em;}
   #search-label {margin-right:.5em;}
+  #submit-subject {display:none;}
   
   </style>
   
@@ -268,10 +270,13 @@
 			"Statistics"
 		];
 		$("#subject").autocomplete({
-			source: availableSubjects
-		});
+			source: availableSubjects,
+			select: function(event, ui)	{
+						$("#subject-header").html(ui.item.value);
+					}
+		});		
 	});
-	
+		
 	/*
 	Moves the left side of the page (the quarterly schedules) with the window when you scroll down
 	$(window).scroll(function(){
@@ -289,6 +294,7 @@
 		<button class="ui-button ui-widget-header">View Degree Progress</button>
 	</span>
 	<span class="nav-right">
+		<h2 class="ui-widget-header page-header" id="subject-header" >EECS</h2>
 		<span class="ui-widget"><label for="subject" id="search-label">Select Subject</label><input id="subject"></span>
 		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
 		<span class="toggles">
