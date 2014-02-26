@@ -272,7 +272,76 @@
 		$("#subject").autocomplete({
 			source: availableSubjects,
 			select: function(event, ui)	{
-						$("#subject-header").html(ui.item.value);
+						var oldSubject = $("#subject-header").html();
+						var oldSubjectCode = oldSubject;
+						var existingCourses = $("li h5");
+						var subject = ui.item.value;
+						var subjectCode = subject;
+						switch(subject) {
+							case "Art History":
+								subjectCode = "ART_HIST";
+								break;
+							case "Chemistry":
+								subjectCode = "CHEM";
+								break;
+							case "Economics":
+								subjectCode = "ECON";
+								break;
+							case "EECS":
+								subjectCode = "EECS";
+								break;
+							case "English":
+								subjectCode = "ENGLISH";
+								break;
+							case "Mathematics":
+								subjectCode = "MATH";
+								break;
+							case "Political Science":
+								subjectCode = "POLI_SCI";
+								break;
+							case "Statistics":
+								subjectCode = "STAT";
+								break;
+						}
+						switch(oldSubject) {
+							case "Art History":
+								oldSubjectCode = "ART_HIST";
+								break;
+							case "Chemistry":
+								oldSubjectCode = "CHEM";
+								break;
+							case "Economics":
+								oldSubjectCode = "ECON";
+								break;
+							case "EECS":
+								oldSubjectCode = "EECS";
+								break;
+							case "English":
+								oldSubjectCode = "ENGLISH";
+								break;
+							case "Mathematics":
+								oldSubjectCode = "MATH";
+								break;
+							case "Political Science":
+								oldSubjectCode = "POLI_SCI";
+								break;
+							case "Statistics":
+								oldSubjectCode = "STAT";
+								break;
+						}
+						
+						$("#subject-header").html(subject);
+						
+						var oldCourseName = "";
+						var newCourseName = "";
+						
+						for(var i = 0; i < existingCourses.length; i++)
+						{							
+							oldCourseName = existingCourses[i].textContent;
+							newCourseName = oldCourseName.replace(oldSubjectCode, subjectCode);	
+							existingCourses[i].textContent = newCourseName;
+						}
+					
 					}
 		});		
 	});
