@@ -275,6 +275,7 @@
 						var oldSubject = $("#subject-header").html();
 						var oldSubjectCode = oldSubject;
 						var existingCourses = $("li h5", $gallery);
+						var existingCourseContainers = $("li", $gallery);
 						var subject = ui.item.value;
 						var subjectCode = subject;
 						switch(subject) {
@@ -330,18 +331,19 @@
 								break;
 						}
 						
-						$("#subject-header").html(subject);
+						$("#subject-header").fadeOut('fast').html(subject).fadeIn('fast');
 						
 						var oldCourseName = "";
 						var newCourseName = "";
 						
+						existingCourseContainers.fadeOut('fast');
 						for(var i = 0; i < existingCourses.length; i++)
 						{							
 							oldCourseName = existingCourses[i].textContent;
 							newCourseName = oldCourseName.replace(oldSubjectCode, subjectCode);	
 							existingCourses[i].textContent = newCourseName;
 						}
-					
+						existingCourseContainers.fadeIn('fast');
 					}
 		});		
 	});
