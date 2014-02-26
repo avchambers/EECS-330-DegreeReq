@@ -271,6 +271,9 @@
 		];
 		$("#subject").autocomplete({
 			source: availableSubjects,
+			minLength: 0,
+			autoFocus: true,
+			delay: 100,
 			select: function(event, ui)	{
 						var oldSubject = $("#subject-header").html();
 						var oldSubjectCode = oldSubject;
