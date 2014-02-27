@@ -343,7 +343,8 @@
 						for(var i = 0; i < existingCourses.length; i++)
 						{							
 							oldCourseName = existingCourses[i].textContent;
-							newCourseName = oldCourseName.replace(oldSubjectCode, subjectCode);	
+							oldCourseName = oldCourseName.substring(oldCourseName.indexOf(" "), oldCourseName.length);
+							newCourseName = subjectCode + oldCourseName;
 							existingCourses[i].textContent = newCourseName;
 						}
 						existingCourseContainers.fadeIn('fast');
