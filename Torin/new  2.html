@@ -16,7 +16,7 @@
   .gallery li a.ui-icon-zoomin { float: left; }
   .gallery li img { width: 100%; cursor: move; }
   
-  #spring17, #winter17, #fall17 { float: left; width: 15%; min-height: 35em; padding: 1%; }
+  #spring17, #winter17, #fall17 { float: left; width: 28%; min-height: 35em; padding: 1%; }
   #spring17 h4 { line-height: 16px; margin: 0 0 0.4em; }
   #spring17 h4 .ui-icon { float: left; }
  
@@ -39,6 +39,10 @@
   #search-label {margin-right:.5em;}
   #submit-subject {display:none;}
   
+  .schedule {overflow:auto;}
+  .instructions{text-align:center;color:rgba(0, 0, 0, .8);margin-top:50%}
+  .activeHelp {color:rgba(0, 0, 0, .4);}
+  
   </style>
   
   <script>
@@ -55,7 +59,13 @@
       revert: "invalid", // when not dropped, the item will revert back to its initial position
       containment: "document",
       helper: "clone",
-      cursor: "move"
+      cursor: "move",
+	  start: function( event, ui ) {
+		$(".instructions").addClass("activeHelp");
+	  },
+	  stop: function( event, ui) {
+		$(".instructions").removeClass("activeHelp");
+	  }
     });
  
 	// let the fall be droppable, accepting the gallery items
@@ -75,7 +85,7 @@
 	  accept: ".winter",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
-        addClassWinter17( ui.draggable );
+		addClassWinter17( ui.draggable );
       }
     });
  
@@ -85,7 +95,7 @@
 	  accept: ".spring",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
-        addClassSpring17( ui.draggable );
+		addClassSpring17( ui.draggable );
       }
     }); 
 	
@@ -118,6 +128,7 @@
 			});
 		  });
 		}
+		$(".instructions").hide();
     }
 	
 	function addClassFall17( $item ) {
@@ -137,6 +148,8 @@
 			});
 		  });
 		 }
+		 
+		 $(".instructions").hide();
     }
 	
 	function addClassSpring17( $item ) {
@@ -156,6 +169,8 @@
 			});
 		  });
 		}
+		
+		$(".instructions").hide();
     }
  
     // image recycle function
@@ -526,17 +541,20 @@
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
 </ul>
-
-<div id="fall17" class="ui-widget-content ui-state-default quarter">
-  <h4 class="ui-widget-header">Fall 2017</h4>
+<div class="schedule">
+	<div id="fall17" class="ui-widget-content ui-state-default quarter">
+	  <h4 class="ui-widget-header">Fall 2017</h4>
+	</div>
+	<div id="winter17" class="ui-widget-content ui-state-default quarter">
+	  <h4 class="ui-widget-header">Winter 2017</h4>
+	  <div class="instructions">
+		Drag a class onto your schedule
+	  </div>
+	</div> 
+	<div id="spring17" class="ui-widget-content ui-state-default quarter">
+	  <h4 class="ui-widget-header">Spring 2017</h4>
+	</div>
 </div>
-<div id="winter17" class="ui-widget-content ui-state-default quarter">
-  <h4 class="ui-widget-header">Winter 2017</h4>
-</div> 
-<div id="spring17" class="ui-widget-content ui-state-default quarter">
-  <h4 class="ui-widget-header">Spring 2017</h4>
-</div>
-
  
 </div>
  
