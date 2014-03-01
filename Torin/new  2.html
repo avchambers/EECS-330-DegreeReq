@@ -10,7 +10,7 @@
   <style>
   #gallery { float: right; width: 47%; min-height: 35em; clear:both; }
   .gallery.custom-state-active { background: #eee; }
-  .gallery li { float: left; width: 175px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+  .gallery li { float: left; width: 175px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; cursor:move; }
   .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
   .gallery li a { float: right; }
   .gallery li a.ui-icon-zoomin { float: left; }
@@ -237,7 +237,7 @@
 			$fall = $(".fall").not(".winter").not(".spring");
 		}
 		$fall.fadeToggle(400);
-		$("#fall17").fadeToggle(400);
+		//$("#fall17").fadeToggle(400);
 	});
 	$( "#toggle-winter17").click(function() {
 		var $winter;
@@ -255,7 +255,7 @@
 			$winter = $(".winter").not(".fall").not(".spring");
 		}
 		$winter.fadeToggle(400);
-		$("#winter17").fadeToggle(400);
+		//$("#winter17").fadeToggle(400);
 	});
 	$( "#toggle-spring17").click(function() {
 		var $spring;
@@ -273,7 +273,7 @@
 			$spring = $(".spring").not(".winter").not(".fall");
 		}
 		$spring.fadeToggle(400);
-		$("#spring17").fadeToggle(400);
+		//$("#spring17").fadeToggle(400);
 	});
 	
 	$(function(){ 
