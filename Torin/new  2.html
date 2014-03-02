@@ -35,8 +35,8 @@
   .nav-right {float:right; width:47%;}
   
   .inactive { background:lightgrey; border-color:lightgrey;}
-  .toggles {margin-left:1.5em;}
-  #search-label {margin-right:.5em;}
+  .toggles {margin-left:1.2em;}
+  #search-label {margin-right:.5em;font-size:0.9em;font-weight:bold;}
   #submit-subject {display:none;}
   
   .schedule {overflow:auto;}
@@ -44,7 +44,7 @@
   .activeHelp {color:rgba(0, 0, 0, .4);}
   
   .scheduledClass li {float:none;margin-left:auto;margin-right:auto;overflow:auto;}
-  #toggle-fall17,#toggle-winter17, #toggle-spring17 {font-size:0.9em;}
+  #toggle-fall17,#toggle-winter17, #toggle-spring17 {font-size:0.9em;width:6em;}
   
   </style>
   
@@ -113,7 +113,7 @@
  
     // image deletion function
     //var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
-	var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
+	var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Remove Class' class='ui-icon ui-icon-trash'>Remove Class</a>";
     function addClassWinter17( $item ) {
       if ($item.hasClass("winter")) {
 		  $item.fadeOut(function() {
@@ -178,7 +178,7 @@
     }
  
     // image recycle function
-    var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
+    var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Remove Class' class='ui-icon ui-icon-trash'>Remove Class</a>";
     function recycleImage( $item ) {
       $item.fadeOut(function() {
         $item
@@ -422,9 +422,9 @@
 		<span class="ui-widget"><label for="subject" id="search-label">Select Subject</label><input id="subject"></span>
 		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
 		<span class="toggles">
-			<button class="ui-button ui-widget-header" id="toggle-fall17">Fall 2017</button>
-			<button class="ui-button ui-widget-header" id="toggle-winter17">Winter 2017</button>
-			<button class="ui-button ui-widget-header" id="toggle-spring17">Spring 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-fall17" title="Toggle Fall 2017 Classes">Fall 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-winter17" title="Toggle Winter 2017 Classes">Winter 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-spring17" title="Toggle Spring 2017 Classes">Spring 2017</button>
 		</span>
 	</span>
 </div>
