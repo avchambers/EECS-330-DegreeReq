@@ -226,17 +226,23 @@
 		$(this).toggleClass("inactive");
 		if ($("#toggle-winter17").hasClass("inactive")) {
 			if($("#toggle-spring17").hasClass("inactive")){
-				$fall = $(".fall");
+				$fall = $(".fall").not("#spring17 li").not("#winter17 li");
 			}
 			else {
-				$fall = $(".fall").not(".spring");
+				$fall = $(".fall").not(".spring").not("#winter17 li");
 			}
 		} else if ($("#toggle-spring17").hasClass("inactive")) {
-			$fall = $(".fall").not(".winter");
+			$fall = $(".fall").not(".winter").not("#spring17 li");
 		} else {
 			$fall = $(".fall").not(".winter").not(".spring");
 		}
+		$fall = $fall.not("#fall17 li");
 		$fall.fadeToggle(400);
+		if($("#toggle-fall17").hasClass("inactive")){
+			$("#fall17 li").draggable("disable");
+		} else {
+			$("#fall17 li").draggable("enable");
+		}
 		//$("#fall17").fadeToggle(400);
 	});
 	$( "#toggle-winter17").click(function() {
@@ -244,36 +250,48 @@
 		$(this).toggleClass("inactive");
 		if ($("#toggle-fall17").hasClass("inactive")) {
 			if($("#toggle-spring17").hasClass("inactive")){
-				$winter = $(".winter");
+				$winter = $(".winter").not("#fall17 li").not("#spring17 li");
 			}
 			else {
-				$winter = $(".winter").not(".spring");
+				$winter = $(".winter").not(".spring").not("#fall17 li");
 			}
 		} else if ($("#toggle-spring17").hasClass("inactive")) {
-			$winter = $(".winter").not(".fall");
+			$winter = $(".winter").not(".fall").not("#spring17 li");
 		} else {
 			$winter = $(".winter").not(".fall").not(".spring");
 		}
+		$winter = $winter.not("#winter17 li");
 		$winter.fadeToggle(400);
 		//$("#winter17").fadeToggle(400);
+		if($("#toggle-winter17").hasClass("inactive")){
+			$("#winter17 li").draggable("disable");
+		} else {
+			$("#winter17 li").draggable("enable");
+		}
 	});
 	$( "#toggle-spring17").click(function() {
 		var $spring;
 		$(this).toggleClass("inactive");
 		if ($("#toggle-fall17").hasClass("inactive")) {
 			if($("#toggle-winter17").hasClass("inactive")){
-				$spring = $(".spring");
+				$spring = $(".spring").not("#fall17 li").not("#winter17 li");
 			}
 			else {
-				$spring = $(".spring").not(".winter");
+				$spring = $(".spring").not(".winter").not("#fall17 li");
 			}
 		} else if ($("#toggle-winter17").hasClass("inactive")) {
-			$spring = $(".spring").not(".fall");
+			$spring = $(".spring").not(".fall").not("#winter17 li");
 		} else {
 			$spring = $(".spring").not(".winter").not(".fall");
 		}
+		$spring = $spring.not("#spring17 li");
 		$spring.fadeToggle(400);
 		//$("#spring17").fadeToggle(400);
+		if($("#toggle-spring17").hasClass("inactive")){
+			$("#spring17 li").draggable("disable");
+		} else {
+			$("#spring17 li").draggable("enable");
+		}
 	});
 	
 	$(function(){ 
