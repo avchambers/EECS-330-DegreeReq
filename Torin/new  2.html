@@ -35,8 +35,9 @@
   .nav-right {float:right; width:47%;}
   
   .inactive { background:lightgrey; border-color:lightgrey;}
-  .toggles {margin-left:1.2em;}
+  .toggles {margin-left:0em;}
   #search-label {margin-right:.5em;font-size:0.9em;font-weight:bold;}
+  #toggle-label {margin-right:.5em;margin-left:.5em;font-size:0.9em;font-weight:bold;}
   #submit-subject {display:none;}
   
   .schedule {overflow:auto;}
@@ -45,6 +46,8 @@
   
   .scheduledClass li {float:none;margin-left:auto;margin-right:auto;overflow:auto;}
   #toggle-fall17,#toggle-winter17, #toggle-spring17 {font-size:0.9em;width:6em;}
+  #subject {font-size:0.9em;}
+  
   
   </style>
   
@@ -419,8 +422,10 @@
 	</span>
 	<span class="nav-right">
 		<h2 class="ui-widget-header page-header" id="subject-header" >EECS</h2>
-		<span class="ui-widget"><label for="subject" id="search-label">Select Subject</label><input id="subject"></span>
+		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject"></span>
 		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
+	
+		<span class="ui-widget"><label for="toggle-fall17" id="toggle-label">Quarters:</label></span>
 		<span class="toggles">
 			<button class="ui-button ui-widget-header" id="toggle-fall17" title="Toggle Fall 2017 Classes">Fall 2017</button>
 			<button class="ui-button ui-widget-header" id="toggle-winter17" title="Toggle Winter 2017 Classes">Winter 2017</button>
