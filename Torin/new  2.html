@@ -189,8 +189,20 @@
           .find( "img" )
             .css( "height", "72px" )
           .end() */
-          .appendTo( $gallery )
-          .fadeIn();
+          .appendTo( $gallery ).end();
+	/*
+	Found a sorting method by id online.
+	It works but the classes are no longer draggable.
+	It works if you reinitialize the gallery list as droppables, but there is probably a more effective way
+	var elems = $("#gallery li").remove();
+	elems.sort(function(a,b) {
+		return parseInt(a.id.substring(4,a.id.length)) > parseInt(b.id.substring(4,a.id.length));
+	});
+	$($gallery).append(elems);
+	*/
+	$item.fadeIn();
+          //.fadeIn();
+		  
       });
     }
  
@@ -497,7 +509,7 @@
 		<a href="http://eecs.northwestern.edu/eecs-330" target="_blank">Course Page</a></p>
 </div>	 
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
-    <li class="ui-widget-content ui-corner-tr fall core">
+    <li class="ui-widget-content ui-corner-tr fall core" id="EECS101">
     <h5 class="ui-widget-header">EECS 101</h5>
     <p>An Intro to Computer Science<br><br>
 		Fall 2017<br>
@@ -505,7 +517,7 @@
     <a id="EECS101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr fall spring">
+  <li class="ui-widget-content ui-corner-tr fall spring" id="EECS110">
     <h5 class="ui-widget-header">EECS 110</h5>
     <p>Intro to Computer Programming<br><br>
 		Fall/Spring 2017<br>
@@ -513,7 +525,7 @@
     <a id="EECS110" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li> 
- <li class="ui-widget-content ui-corner-tr fall winter core">
+ <li class="ui-widget-content ui-corner-tr fall winter core" id="EECS111">
     <h5 class="ui-widget-header">EECS 111</h5>
     <p>Fundamentals of Programming I<br><br>
 		Fall/Winter 2017<br>
@@ -521,7 +533,7 @@
     <a id="EECS111" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-<li class="ui-widget-content ui-corner-tr spring core">
+<li class="ui-widget-content ui-corner-tr spring core" id="EECS211">
     <h5 class="ui-widget-header">EECS 211</h5>
     <p>Fundamentals of Programming II<br><br>
 		Spring 2017<br>
@@ -529,7 +541,7 @@
     <a id="EECS211" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-<li class="ui-widget-content ui-corner-tr winter core">
+<li class="ui-widget-content ui-corner-tr winter core" id="EECS212">
     <h5 class="ui-widget-header">EECS 212</h5>
     <p>Discrete Mathematics for CS<br><br>
 		Winter 2017<br>
@@ -537,7 +549,7 @@
     <a id="EECS212" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr fall spring core">
+  <li class="ui-widget-content ui-corner-tr fall spring core" id="EECS213">
     <h5 class="ui-widget-header">EECS 213</h5>
     <p>Intro to Computer Systems<br><br>
 		Fall/Spring 2017<br>
@@ -545,7 +557,7 @@
     <a id="EECS213" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr spring core">
+  <li class="ui-widget-content ui-corner-tr spring core" id="EECS214">
     <h5 class="ui-widget-header">EECS 214</h5>
     <p>Data Structures and Data Management<br><br>
 		Spring 2017<br>
@@ -553,7 +565,7 @@
     <a id="EECS214" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr winter breadth depth">
+  <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
     <h5 class="ui-widget-header">EECS 330</h5>
     <p>Human Computer Interaction<br><br>
 		Winter 2017<br>
