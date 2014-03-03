@@ -328,7 +328,8 @@
 			"English",
 			"Mathematics",
 			"Political Science",
-			"Statistics"
+			"Statistics",
+			"All"
 		];
 		$("#subject").autocomplete({
 			source: availableSubjects,
@@ -344,70 +345,100 @@
 						var subjectCode = subject;
 						switch(subject) {
 							case "Art History":
-								subjectCode = "ART_HIST";
+								$( "ul[id='Art History']").show();
+								$( "ul[id='Chemistry']").hide();
+								$( "ul[id='Economics']").hide();
+								$( "ul[id='EECS']").hide();
+								$( "ul[id='English']").hide();
+								$( "ul[id='Mathematics']").hide();
+								$( "ul[id='Political Science']").hide();
+								$( "ul[id='Statistics']").hide();
 								break;
 							case "Chemistry":
-								subjectCode = "CHEM";
+								$( "ul[id='Art History']").hide();
+								$( "ul[id='Chemistry']").show();
+								$( "ul[id='Economics']").hide();
+								$( "ul[id='EECS']").hide();
+								$( "ul[id='English']").hide();
+								$( "ul[id='Mathematics']").hide();
+								$( "ul[id='Political Science']").hide();
+								$( "ul[id='Statistics']").hide();
 								break;
 							case "Economics":
-								subjectCode = "ECON";
+								$( "ul[id='Art History']").hide();
+								$( "ul[id='Chemistry']").hide();
+								$( "ul[id='Economics']").show();
+								$( "ul[id='EECS']").hide();
+								$( "ul[id='English']").hide();
+								$( "ul[id='Mathematics']").hide();
+								$( "ul[id='Political Science']").hide();
+								$( "ul[id='Statistics']").hide();
 								break;
 							case "EECS":
-								subjectCode = "EECS";
+								$( "ul[id='Art History']").hide();
+								$( "ul[id='Chemistry']").hide();
+								$( "ul[id='Economics']").hide();
+								$( "ul[id='EECS']").show();
+								$( "ul[id='English']").hide();
+								$( "ul[id='Mathematics']").hide();
+								$( "ul[id='Political Science']").hide();
+								$( "ul[id='Statistics']").hide();
 								break;
 							case "English":
-								subjectCode = "ENGLISH";
+								$( "ul[id='Art History']").hide();
+								$( "ul[id='Chemistry']").hide();
+								$( "ul[id='Economics']").hide();
+								$( "ul[id='EECS']").hide();
+								$( "ul[id='English']").show();
+								$( "ul[id='Mathematics']").hide();
+								$( "ul[id='Political Science']").hide();
+								$( "ul[id='Statistics']").hide();
 								break;
 							case "Mathematics":
-								subjectCode = "MATH";
+								$( "ul[id='Art History']").hide();
+								$( "ul[id='Chemistry']").hide();
+								$( "ul[id='Economics']").hide();
+								$( "ul[id='EECS']").hide();
+								$( "ul[id='English']").hide();
+								$( "ul[id='Mathematics']").show();
+								$( "ul[id='Political Science']").hide();
+								$( "ul[id='Statistics']").hide();
 								break;
 							case "Political Science":
-								subjectCode = "POLI_SCI";
+								$( "ul[id='Art History']").hide();
+								$( "ul[id='Chemistry']").hide();
+								$( "ul[id='Economics']").hide();
+								$( "ul[id='EECS']").hide();
+								$( "ul[id='English']").hide();
+								$( "ul[id='Mathematics']").hide();
+								$( "ul[id='Political Science']").show();
+								$( "ul[id='Statistics']").hide();
 								break;
 							case "Statistics":
-								subjectCode = "STAT";
+								$( "ul[id='Art History']").hide();
+								$( "ul[id='Chemistry']").hide();
+								$( "ul[id='Economics']").hide();
+								$( "ul[id='EECS']").hide();
+								$( "ul[id='English']").hide();
+								$( "ul[id='Mathematics']").hide();
+								$( "ul[id='Political Science']").hide();
+								$( "ul[id='Statistics']").show();
 								break;
-						}
-						switch(oldSubject) {
-							case "Art History":
-								oldSubjectCode = "ART_HIST";
-								break;
-							case "Chemistry":
-								oldSubjectCode = "CHEM";
-								break;
-							case "Economics":
-								oldSubjectCode = "ECON";
-								break;
-							case "EECS":
-								oldSubjectCode = "EECS";
-								break;
-							case "English":
-								oldSubjectCode = "ENGLISH";
-								break;
-							case "Mathematics":
-								oldSubjectCode = "MATH";
-								break;
-							case "Political Science":
-								oldSubjectCode = "POLI_SCI";
-								break;
-							case "Statistics":
-								oldSubjectCode = "STAT";
+							case "All":
+								$( "ul[id='Art History']").show();
+								$( "ul[id='Chemistry']").show();
+								$( "ul[id='Economics']").show();
+								$( "ul[id='EECS']").show();
+								$( "ul[id='English']").show();
+								$( "ul[id='Mathematics']").show();
+								$( "ul[id='Political Science']").show();
+								$( "ul[id='Statistics']").show();
 								break;
 						}
 						
 						$("#subject-header").fadeOut('fast').html(subject).fadeIn('fast');
 						
-						var oldCourseName = "";
-						var newCourseName = "";
-						
 						existingCourseContainers.fadeOut('fast');
-						for(var i = 0; i < existingCourses.length; i++)
-						{							
-							oldCourseName = existingCourses[i].textContent;
-							oldCourseName = oldCourseName.substring(oldCourseName.indexOf(" "), oldCourseName.length);
-							newCourseName = subjectCode + oldCourseName;
-							existingCourses[i].textContent = newCourseName;
-						}
 						existingCourseContainers.fadeIn('fast');
 					}
 		}).focus(function() {
@@ -527,7 +558,8 @@
 		<a href="http://eecs.northwestern.edu/eecs-330" target="_blank">Course Page</a></p>
 </div>	 
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
-    <li class="ui-widget-content ui-corner-tr fall core" id="EECS101">
+    <ul id="EECS" class="gallery ui-helper-reset ui-helper-clearfix">
+	<li class="ui-widget-content ui-corner-tr fall core" id="EECS101">
     <h5 class="ui-widget-header">EECS 101</h5>
     <p>An Intro to Computer Science<br><br>
 		Fall 2017<br>
@@ -542,7 +574,7 @@
 		MWF 12:00-12:50</p>
     <a id="EECS110" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li> 
+  </li>
  <li class="ui-widget-content ui-corner-tr fall winter core" id="EECS111">
     <h5 class="ui-widget-header">EECS 111</h5>
     <p>Fundamentals of Programming I<br><br>
@@ -559,7 +591,7 @@
     <a id="EECS211" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-<li class="ui-widget-content ui-corner-tr winter core" id="EECS212">
+<li class="ui-widget-content ui-corner-tr winter core" id="Mat212">
     <h5 class="ui-widget-header">EECS 212</h5>
     <p>Discrete Mathematics for CS<br><br>
 		Winter 2017<br>
@@ -591,7 +623,78 @@
     <a id="EECS330" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-</ul>
+  </ul>
+  <ul id="Art History" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+    <h5 class="ui-widget-header">Art History 101</h5>
+    <p>Paintings and Shit<br><br>
+		Winter 2017<br>
+		MWF 1:00-1:50</p>
+    <a id="Art101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
+  </li>
+  </ul>
+  <ul id="Chemistry" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+    <h5 class="ui-widget-header">Chem 101</h5>
+    <p>Who is this Adam I keep hearing about?<br><br>
+		Winter 2017<br>
+		MWF 1:00-1:50</p>
+    <a id="Chem101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
+  </li>
+  </ul>
+  <ul id="Economics" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+    <h5 class="ui-widget-header">Econ 101</h5>
+    <p>Why the minimum wage is bad (it's not)<br><br>
+		Winter 2017<br>
+		MWF 1:00-1:50</p>
+    <a id="Econ101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
+  </li>
+  </ul>
+  <ul id="English" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+    <h5 class="ui-widget-header">English 101</h5>
+    <p>How to be a better Barrista<br><br>
+		Winter 2017<br>
+		MWF 1:00-1:50</p>
+    <a id="Eng101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
+  </li>
+  </ul>
+  <ul id="Mathematics" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+    <h5 class="ui-widget-header">Math 101</h5>
+    <p>1+1=Potato<br><br>
+		Winter 2017<br>
+		MWF 1:00-1:50</p>
+    <a id="Math101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
+  </li>
+  </ul>
+  <ul id="Political Science" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+    <h5 class="ui-widget-header">PoliSci101</h5>
+    <p>Frank Underwood for Pres<br><br>
+		Winter 2017<br>
+		MWF 1:00-1:50</p>
+    <a id="PoliSci101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
+  </li>
+  </ul>
+  <ul id="Statistics" class="gallery ui-helper-reset ui-helper-clearfix">
+    <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+    <h5 class="ui-widget-header">Stats101</h5>
+    <p>I can't think of a joke...<br><br>
+		Winter 2017<br>
+		MWF 1:00-1:50</p>
+    <a id="Stats101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
+  </li>
+  </ul>  
+  </ul>
 <div class="schedule">
 	<div id="fall17" class="ui-widget-content ui-state-default quarter">
 	  <h4 class="ui-widget-header">Fall 2017</h4>
