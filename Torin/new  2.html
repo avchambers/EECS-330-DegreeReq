@@ -333,7 +333,7 @@
 		$("#subject").autocomplete({
 			source: availableSubjects,
 			minLength: 0,
-			autoFocus: true,
+			autoFocus: false,
 			delay: 100,
 			select: function(event, ui)	{
 						var oldSubject = $("#subject-header").html();
@@ -429,11 +429,11 @@
  <div class="navigation ui-widget ui-helper-clearfix">
 	<span class="nav-left">
 		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
-		<button class="ui-button ui-widget-header">View Degree Progress</button>
+		<button class="ui-button ui-widget-header" tabindex="1" >View Degree Progress</button>
 	</span>
 	<span class="nav-right">
 		<h2 class="ui-widget-header page-header" id="subject-header" >EECS</h2>
-		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject"></span>
+		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject" tabindex="2" ></span>
 		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
 	
 		<span class="ui-widget"><label for="toggle-fall17" id="toggle-label">Quarters:</label></span>
