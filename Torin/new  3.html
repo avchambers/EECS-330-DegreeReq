@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+  <title>Degree Progress Prototype</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <link href="css/ui-lightness/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <style>
+	li.complete {color: green;}
+	li.needed {color: red;}
+	li.taking {color: #FFA500;}
+  </style>
+  <script>
+  $(function() {
+    $( "#accordion" ).accordion({
+      heightStyle: "content"
+    });
+	$( "#accordion" ).accordion({
+      collapsible: true, active: false
+    });
+	$( "#accordion2" ).accordion({
+      heightStyle: "content"
+    });
+	$( "#accordion2" ).accordion({
+      collapsible: true, active: false
+    });
+  });
+  </script>
+</head>
+<body>
+ 
+<div id="accordion">
+  <h3>Weinberg Distribution Requirements</h3>
+  <div>
+	<div id="accordion2">
+	  <h3>Area I: Natural Sciences</h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Physics 135-1 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Area II: Formal Studies</h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Mathematics 300 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Area III: Social and Behavioural Sciences</h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Economics 201 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Area IV: Historical Studies</h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - History 201-1 - Completed!</li>
+			<li class="taking">One Credit - History 201-2 - Taking This Quarter</li>
+		</ul>
+	  </div>
+	  	  <h3>Area V: Ethics and Values</h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Philosophy 110 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  	  <h3>Area VI: Literature and FIne Arts</h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Slavic 201-2 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  </div>
+  </div>
+  <h3>Section 2</h3>
+  <div>
+    <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
+  </div>
+  <h3>Section 3</h3>
+  <div>
+	  <p>In this group assignment, you will build a computer-based prototype of your project that includes
+		three representative tasks. Your implementation should consist of a horizontal prototype of all
+		features needed by your representative tasks (broad but shallow), plus a vertical prototype of one
+		particular part of your interface (narrow and deep). Choose one feature of your design for vertical
+		prototyping.
+		Your prototype should be:</p>
+	  </div>
+  <h3>Section 4</h3>
+  <div>
+    <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+  </div>
+</div>
+ 
+ 
+</body>
+</html>
