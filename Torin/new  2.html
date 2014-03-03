@@ -410,7 +410,9 @@
 						}
 						existingCourseContainers.fadeIn('fast');
 					}
-		});		
+		}).focus(function() {
+				$(this).autocomplete("search", "");
+			});		
 	});
 		
 	/*
