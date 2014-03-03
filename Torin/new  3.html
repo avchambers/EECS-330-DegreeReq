@@ -8,9 +8,16 @@
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <style>
+	body { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;}
+	
 	li.complete {color: green;}
 	li.needed {color: red;}
 	li.taking {color: #FFA500;}
+	
+	span.complete {color: green;}
+	span.needed {color: red;}
+	span.taking {color: #FFA500;}
+		
   </style>
   <script>
   $(function() {
@@ -36,47 +43,47 @@
   </script>
 </head>
 <body>
- 
+<h2 class="ui-widget-header page-header" >Degree Progress Report - EECS (Weinberg)</h2>
 <div id="accordion">
-  <h3>Weinberg Distribution Requirements</h3>
+  <h3>Weinberg Distribution Requirements <span class="taking">(6 of 12 Courses Completed)</span></h3>
   <div>
 	<div id="accordion2">
-	  <h3>Area I: Natural Sciences</h3>
+	  <h3>Area I: Natural Sciences <span class="taking">(1 of 2 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="complete">One Credit - Physics 135-1 - Completed!</li>
 			<li class="needed">One Credit - Needs to be Taken</li>
 		</ul>
 	  </div>
-	  <h3>Area II: Formal Studies</h3>
+	  <h3>Area II: Formal Studies <span class="complete">(2 of 2 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="complete">One Credit - Mathematics 300 - Completed!</li>
-			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="complete">One Credit - Mathematics 104 - Completed! </li>
 		</ul>
 	  </div>
-	  <h3>Area III: Social and Behavioural Sciences</h3>
+	  <h3>Area III: Social and Behavioural Sciences <span class="taking">(1 of 2 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="complete">One Credit - Economics 201 - Completed!</li>
 			<li class="needed">One Credit - Needs to be Taken</li>
 		</ul>
 	  </div>
-	  <h3>Area IV: Historical Studies</h3>
+	  <h3>Area IV: Historical Studies <span class="taking">(1 of 2 Courses Completed, 1 Course Pending)</span></h3>
 	  <div>
 		<ul>
 			<li class="complete">One Credit - History 201-1 - Completed!</li>
 			<li class="taking">One Credit - History 201-2 - Taking This Quarter</li>
 		</ul>
 	  </div>
-	  	  <h3>Area V: Ethics and Values</h3>
+	  	  <h3>Area V: Ethics and Values <span class="needed">(0 of 2 Courses Completed)</span></h3>
 	  <div>
 		<ul>
-			<li class="complete">One Credit - Philosophy 110 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
 			<li class="needed">One Credit - Needs to be Taken</li>
 		</ul>
 	  </div>
-	  	  <h3>Area VI: Literature and Fine Arts</h3>
+	  	  <h3>Area VI: Literature and Fine Arts <span class="taking">(1 of 2 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="complete">One Credit - Slavic 201-2 - Completed!</li>
@@ -85,7 +92,7 @@
 	  </div>
 	</div>
 	</div>
-	<h3>Outside Requirements</h3>
+	<h3>Outside Requirements <span class="taking">(2 of 5 Courses Completed, 1 Course Pending)</span></h3>
 	<div>
 		<ul>
 			<li class="complete">MATH 220 (Differential Calculus of One Variable Functions) - Completed!</li>
@@ -95,7 +102,7 @@
 			<li class="needed">STATS 210 or MATH 310-1 - Needs to be Taken</li>
 		</ul>
 	</div>
-	<h3>Core Courses</h3>
+	<h3>Core Courses <span class="taking">(4 of 6 Courses Completed, 1 Course Pending)</span></h3>
 	<div>
 		<ul>
 			<li class="needed">EECS 101 - Needs to be Taken</li>
@@ -106,7 +113,7 @@
 			<li class="complete">EECS 214 - Completed!</li>
 		</ul>
 	</div>
-	<h3>Breadth Areas</h3>
+	<h3>Breadth Areas <span class="taking">(2 of 5 Courses Completed, 1 Course Pending)</span></h3>
 	<div>
 		<ul>
 			<li class="needed">Theory - Needs to be Taken</li>
@@ -116,10 +123,10 @@
 			<li class="complete">Software Development - EECS 395 - Completed!</li>
 		</ul>
 	</div>
-	<h3>Depth Areas</h3>
+	<h3>Depth Areas <span class="taking">(5 of 15 Courses Completed, 1 Course Pending)</span></h3>
 	<div>
 	<div id="accordion3">
-	  <h3>Theory - 3 Credits Needed</h3>
+	  <h3>Theory <span class="needed">(0 of 3 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="needed">One Credit - Needs to be Taken</li>
@@ -127,7 +134,7 @@
 			<li class="needed">One Credit - Needs to be Taken</li>
 		</ul>
 	  </div>
-	  <h3>Systems - Completed!</h3>
+	  <h3>Systems - <span class="complete">(3 of 3 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="complete">One Credit - EECS 321 - Completed!</li>
@@ -135,7 +142,7 @@
 			<li class="complete">One Credit - EECS 343 - Completed!</li>
 		</ul>
 	  </div>
-	  <h3>Artificial Intelligence - 3 Credits Needed</h3>
+	  <h3>Artificial Intelligence <span class="needed">(0 of 3 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="needed">One Credit - Needs to be Taken</li>
@@ -143,15 +150,15 @@
 			<li class="needed">One Credit - Needs to be Taken</li>
 		</ul>
 	  </div>
-	  <h3>Interfaces - 2 Credits Needed, 1 This Quarter</h3>
+	  <h3>Interfaces <span class="taking">(0 of 3 Courses Completed, 1 Course Pending)</span></h3>
 	  <div>
 		<ul>
-			<li class="needed">One Credit - EECS 330 - Taking This Quarter</li>
+			<li class="taking">One Credit - EECS 330 - Taking This Quarter</li>
 			<li class="needed">One Credit - Needs to be Taken</li>
 			<li class="needed">One Credit - Needs to be Taken</li>
 		</ul>
 	  </div>
-	  	  <h3>Software Development - 1 Credit Needed</h3>
+	  	  <h3>Software Development <span class="taking">(2 of 3 Courses Completed)</span></h3>
 	  <div>
 		<ul>
 			<li class="complete">One Credit - EECS 395 - Completed!</li>
@@ -161,7 +168,7 @@
 	  </div>
 	</div>
 	</div>
-	<h3>Project Requirement</h3>
+	<h3>Project Requirement <span class="needed">(0 of 2 Courses Completed)</span></h3>
 	<div>
 		<ul>
 			<li class="needed">One Credit - Needs to be Taken</li>
