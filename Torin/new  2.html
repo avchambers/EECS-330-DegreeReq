@@ -183,32 +183,35 @@
     // image recycle function
     var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Remove Class' class='ui-icon ui-icon-trash'>Remove Class</a>";
     function recycleImage( $item ) {
-      $item.fadeOut(function() {
-        $item
-    //      .find( "a.ui-icon-refresh" )
-          .find( "a.ui-icon-trash" )
-            .remove()
-          .end()
-        /*  .append( trash_icon )
-          .find( "img" )
-            .css( "height", "72px" )
-          .end() */
-          .appendTo( $gallery ).end();
-	/*
-	Found a sorting method by id online.
-	It works but the classes are no longer draggable.
-	It works if you reinitialize the gallery list as droppables, but there is probably a more effective way
-	var elems = $("#gallery li").remove();
-	elems.sort(function(a,b) {
-		return parseInt(a.id.substring(4,a.id.length)) > parseInt(b.id.substring(4,a.id.length));
-	});
-	$($gallery).append(elems);
-	*/
-	$item.fadeIn();
-          //.fadeIn();
-		  
-      });
-    }
+      
+	  if (!$item.draggable("option", "disabled")) {
+		  $item.fadeOut(function() {
+			$item
+		//      .find( "a.ui-icon-refresh" )
+			  .find( "a.ui-icon-trash" )
+				.remove()
+			  .end()
+			/*  .append( trash_icon )
+			  .find( "img" )
+				.css( "height", "72px" )
+			  .end() */
+			  .appendTo( $gallery ).end();
+		/*
+		Found a sorting method by id online.
+		It works but the classes are no longer draggable.
+		It works if you reinitialize the gallery list as droppables, but there is probably a more effective way
+		var elems = $("#gallery li").remove();
+		elems.sort(function(a,b) {
+			return parseInt(a.id.substring(4,a.id.length)) > parseInt(b.id.substring(4,a.id.length));
+		});
+		$($gallery).append(elems);
+		*/
+		$item.fadeIn();
+			  //.fadeIn();
+		});
+	  }
+    };
+    
  
     // image preview function, demonstrating the ui.dialog used as a modal window
     function viewLargerImage( $link ) {
