@@ -256,8 +256,10 @@
 		$fall.fadeToggle(400);
 		if($("#toggle-fall17").hasClass("inactive")){
 			$("#fall17 li").draggable("disable");
+			$("#fall17 h4").addClass("ui-state-disabled");
 		} else {
 			$("#fall17 li").draggable("enable");
+			$("#fall17 h4").removeClass("ui-state-disabled");
 		}
 		//$("#fall17").fadeToggle(400);
 	});
@@ -281,8 +283,10 @@
 		//$("#winter17").fadeToggle(400);
 		if($("#toggle-winter17").hasClass("inactive")){
 			$("#winter17 li").draggable("disable");
+			$("#winter17 h4").addClass("ui-state-disabled");
 		} else {
 			$("#winter17 li").draggable("enable");
+			$("#winter17 h4").removeClass("ui-state-disabled");
 		}
 	});
 	$( "#toggle-spring17").click(function() {
@@ -305,8 +309,10 @@
 		//$("#spring17").fadeToggle(400);
 		if($("#toggle-spring17").hasClass("inactive")){
 			$("#spring17 li").draggable("disable");
+			$("#spring17 h4").addClass("ui-state-disabled");
 		} else {
 			$("#spring17 li").draggable("enable");
+			$("#spring17 h4").removeClass("ui-state-disabled");
 		}
 	});
 	
