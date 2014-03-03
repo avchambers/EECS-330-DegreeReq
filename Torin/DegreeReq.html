@@ -319,6 +319,7 @@
 			$("#winter17 h4").removeClass("ui-state-disabled");
 		}
 	});
+	
 	$( "#toggle-spring17").click(function() {
 		var $spring;
 		$(this).toggleClass("inactive");
@@ -344,6 +345,31 @@
 			$("#spring17 li").draggable("enable");
 			$("#spring17 h4").removeClass("ui-state-disabled");
 		}
+	});
+	
+	$(function() {
+		$( "#tabs" ).tabs();
+	});
+	
+	$(function() {
+		$( "#accordion" ).accordion({
+		  heightStyle: "content"
+		});
+		$( "#accordion" ).accordion({
+		  collapsible: true, active: false
+		});
+		$( "#accordion2" ).accordion({
+		  heightStyle: "content"
+		});
+		$( "#accordion2" ).accordion({
+		  collapsible: true, active: false
+		});
+		$( "#accordion3" ).accordion({
+		  heightStyle: "content"
+		});
+		$( "#accordion3" ).accordion({
+		  collapsible: true, active: false
+		});
 	});
 	
 	$(function(){ 
@@ -452,7 +478,7 @@
   </script>
 </head>
 <body>
- 
+ <!--
  <div class="navigation ui-widget ui-helper-clearfix">
 	<span class="nav-left">
 		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
@@ -471,7 +497,7 @@
 		</span>
 	</span>
 </div>
- 
+ -->
 <div class="ui-widget ui-helper-clearfix">
 
 <div id="EECS101" title="EECS 101: An Intro to Computer Science for Everyone" style="display:none">
@@ -552,6 +578,30 @@
 		<br><br>
 		<a href="http://eecs.northwestern.edu/eecs-330" target="_blank">Course Page</a></p>
 </div>	 
+
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Available Classes</a></li>
+    <li><a href="#tabs-2">Degree Progress</a></li>
+  </ul>
+<div id = "tabs-1">
+
+ <div class="navigation ui-widget ui-helper-clearfix">
+	<span>
+		<h2 class="ui-widget-header page-header" id="subject-header" >EECS</h2>
+		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject" tabindex="2" ></span>
+		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
+	
+		<span class="ui-widget"><label for="toggle-fall17" id="toggle-label">Quarters:</label></span>
+		<span class="toggles">
+			<button class="ui-button ui-widget-header" id="toggle-fall17" title="Toggle Fall 2017 Classes">Fall 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-winter17" title="Toggle Winter 2017 Classes">Winter 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-spring17" title="Toggle Spring 2017 Classes">Spring 2017</button>
+		</span>
+	</span>
+</div>
+
+
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
     <li class="ui-widget-content ui-corner-tr fall core" id="EECS101">
     <h5 class="ui-widget-header">EECS 101</h5>
@@ -618,6 +668,146 @@
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
 </ul>
+
+</div>
+<div id="tabs-2">
+    <h2 class="ui-widget-header page-header" >Degree Progress Report<br>EECS (Weinberg)</h2>
+<div id="accordion">
+  <h3>Weinberg Distribution Requirements <span class="taking">(6 of 12 Courses Completed)</span></h3>
+  <div>
+	<div id="accordion2">
+	  <h3>Area I: Natural Sciences <span class="taking">(1 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Physics 135-1 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Area II: Formal Studies <span class="complete">(2 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Mathematics 300 - Completed!</li>
+			<li class="complete">One Credit - Mathematics 104 - Completed! </li>
+		</ul>
+	  </div>
+	  <h3>Area III: Social and Behavioural Sciences <span class="taking">(1 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Economics 201 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Area IV: Historical Studies <span class="taking">(1 of 2 Courses Completed, 1 Course Pending)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - History 201-1 - Completed!</li>
+			<li class="taking">One Credit - History 201-2 - Taking This Quarter</li>
+		</ul>
+	  </div>
+	  	  <h3>Area V: Ethics and Values <span class="needed">(0 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  	  <h3>Area VI: Literature and Fine Arts <span class="taking">(1 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Slavic 201-2 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	</div>
+	</div>
+	<h3>Outside Requirements <span class="taking">(2 of 5 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+		<ul>
+			<li class="complete">MATH 220 (Differential Calculus of One Variable Functions) - Completed!</li>
+			<li class="complete">MATH 224 (Integral Calculus of One Variable Functions)- Completed!</li>
+			<li class="taking">MATH 230 - Taking This Quarter</li>
+			<li class="needed">MATH 240 - Needs to be Taken</li>
+			<li class="needed">STATS 210 or MATH 310-1 - Needs to be Taken</li>
+		</ul>
+	</div>
+	<h3>Core Courses <span class="taking">(4 of 6 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+		<ul>
+			<li class="needed">EECS 101 - Needs to be Taken</li>
+			<li class="complete">EECS 111 - Completed!</li>
+			<li class="complete">EECS 211 - Completed!</li>
+			<li class="taking">EECS 212 - Taking This Quarter</li>
+			<li class="complete">EECS 213 - Completed!</li>
+			<li class="complete">EECS 214 - Completed!</li>
+		</ul>
+	</div>
+	<h3>Breadth Areas <span class="taking">(2 of 5 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+		<ul>
+			<li class="needed">Theory - Needs to be Taken</li>
+			<li class="complete">Systems - EECS 321 - Completed!</li>
+			<li class="needed">Artificial Intelligence - Needs to be Taken</li>
+			<li class="taking">Interfaces - EECS 330 - Taking This Quarter</li>
+			<li class="complete">Software Development - EECS 395 - Completed!</li>
+		</ul>
+	</div>
+	<h3>Depth Areas <span class="taking">(5 of 15 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+	<div id="accordion3">
+	  <h3>Theory <span class="needed">(0 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Systems - <span class="complete">(3 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - EECS 321 - Completed!</li>
+			<li class="complete">One Credit - EECS 322 - Completed!</li>
+			<li class="complete">One Credit - EECS 343 - Completed!</li>
+		</ul>
+	  </div>
+	  <h3>Artificial Intelligence <span class="needed">(0 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Interfaces <span class="taking">(0 of 3 Courses Completed, 1 Course Pending)</span></h3>
+	  <div>
+		<ul>
+			<li class="taking">One Credit - EECS 330 - Taking This Quarter</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  	  <h3>Software Development <span class="taking">(2 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - EECS 395 - Completed!</li>
+			<li class="complete">One Credit - EECS 395 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	</div>
+	</div>
+	<h3>Project Requirement <span class="needed">(0 of 2 Courses Completed)</span></h3>
+	<div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	</div>
+</div>
+  </div>
+</div>
+
+
 <div class="schedule">
 	<div id="fall17" class="ui-widget-content ui-state-default quarter">
 	  <h4 class="ui-widget-header">Fall 2017</h4>
