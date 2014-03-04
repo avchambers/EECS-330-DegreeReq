@@ -59,6 +59,8 @@
 	span.taking {color: #FFA500;}
 	
 	#tabs-1 {padding:1em 0.4em;}
+	#reset-button {font-size:0.9em;width:6em;}
+	#reset-container {float:right;margin-right:5.5%;margin-top:2%;}
   
   </style>
   
@@ -293,6 +295,11 @@
 			viewLargerImage( $target );
 		}
 		  return false;
+		});
+		
+		$("#reset-button").click(function() {
+			if(confirm("Are you sure you want to reset? Your current schedule will be lost."))
+				self.location.reload();
 		});
 	});
 	
@@ -578,8 +585,8 @@
 				$(this).select();
 		  });		
 	});
-		
-	
+
+			
 	//Moves the left side of the page (the quarterly schedules) with the window when you scroll down
 	/*$(window).scroll(function(){
 		$(".quarter").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
@@ -757,6 +764,9 @@
 	<span class="nav-left">
 		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
 	</span>
+	<span id="reset-container">
+		<button class="ui-button ui-widget-header" id="reset-button" title="Reset Schedule and Course Filters" >Reset All</button>
+	</span>
 </div>
 
 
@@ -781,6 +791,7 @@
 		<span><h2 class="ui-widget-header page-header" id="subject-header" ><span>All</span></h2></span>
 		
 	</span>
+
 </div>
 
 
