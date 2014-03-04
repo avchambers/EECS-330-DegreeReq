@@ -29,7 +29,7 @@
 	.ui-icon-zoomin { cursor:pointer; }
 
 	body { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;}
-	.navigation { height: 6.5em; margin-bottom:.5em;}
+	.navigation { height: 4.5em; margin-bottom:.5em;}
 	.page-header {width: 47%;}
 	.nav-left {float:left; width:47%;}
 	/*.nav-right {float:right; width:47%;}*/
@@ -311,7 +311,6 @@
 			$("#fall17 li").draggable("enable");
 			$("#fall17 h4").removeClass("ui-state-disabled");
 		}
-		//$("#fall17").fadeToggle(400);
 	});
 	$( "#toggle-winter17").click(function() {
 		var $winter;
@@ -330,7 +329,6 @@
 		}
 		$winter = $winter.not("#winter17 li");
 		$winter.fadeToggle(400);
-		//$("#winter17").fadeToggle(400);
 		if($("#toggle-winter17").hasClass("inactive")){
 			$("#winter17 li").draggable("disable");
 			$("#winter17 h4").addClass("ui-state-disabled");
@@ -441,6 +439,9 @@
 							case "Statistics":
 								subjectCode = "STAT";
 								break;
+							case "All":
+								subjectCode = "ALL";
+								break;
 						}
 						switch(oldSubject) {
 							case "Art History":
@@ -467,6 +468,9 @@
 							case "Statistics":
 								oldSubjectCode = "STAT";
 								break;
+							case "All":
+								oldSubjectCode = "ALL";
+								break;
 						}
 						
 						$("#subject-header").html(subject);
@@ -474,12 +478,14 @@
 						var oldCourseName = "";
 						var newCourseName = "";
 						
-						existingCourseContainers.fadeOut();
+						existingCourseContainers.fadeOut('fast');
 						
 						existingCourseContainers.each(function()
 						{
 							if ($(this).hasClass(subjectCode)){
-								$(this).fadeIn();
+								$(this).fadeIn('fast');
+							} else if (subjectCode == "ALL") {
+								$(this).fadeIn('fast');
 							}
 						});
 						/*
@@ -518,6 +524,166 @@
   </script>
 </head>
 <body>
+
+<div id="ART_HIST220" title="ART_HIST 220: Introduction to African Art" style="display:none">
+		<p>Instructor: L. Wilson<br><br>
+		This survey course examines the diverse art and architecture of Africa from the 15th century to the present. We will engage critically with how the study of African art has developed as we consider issues including the influence of cross-cultural interactions.
+		<br>
+		<br>
+		Art History 200-Level Course Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.arthistory.northwestern.edu/resources/documents/AH220.pdf" target="_blank">Course Page</a></p>
+</div>	
+<div id="CHEM101" title="CHEM 101: General Chemistry" style="display:none">
+		<p>Instructor: Hupp<br><br>
+		Descriptive chemistry, elements and compounds; basic chemical calculations, mole problems, stoichiometry, and solution concentrations; gas laws; thermochemistry; quantum theory and electronic structure of atoms; periodic properties of the elements; nuclear chemistry; chemical bonding. With laboratory.
+		<br>
+		<br>
+		Chemistry Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.chemistry.northwestern.edu/undergraduate/courses.html" target="_blank">Course Page</a></p>
+</div>		
+<div id="ECON201" title="ECON 201: Intro to Macroeconomics" style="display:none">
+		<p>Instructor: R. Walker<br><br>
+		Scarcity and choice; elements of demand and supply, determinants of aggregate output, employment, inflation, growth, and international balance of payments.
+		<br>
+		<br>
+		Economics Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.econ.northwestern.edu/classes/undergrad.html" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS101" title="EECS 101: An Intro to Computer Science for Everyone" style="display:none">
+		<p>Instructor: H. Zhang<br><br>
+		The primary goal of this course is to explore the whats, whys, and hows of computer science. Topics to be covered include the theory of computation (what computers can compute), algorithms for efficient computation (what to tell a computer to compute), programming languages (how to tell a computer what to compute), artificial intelligence (how your computer can do things your brain does), computational biology (how DNA-based biological systems are like programs), computer systems (e.g., how computers work together in networks like the Internet), and human computer interaction.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-101" target="_blank">Course Page</a></p>
+</div>		
+<div id="EECS110" title="EECS 110: Intro to Computer Programming" style="display:none">
+		<p>Instructors: Tumblin (Fall), Kuzmanovic (Spring)<br><br>
+		Introduction to programming practice using a modern programming language. Analysis and formulation of problems for computer solution. Systematic design, construction, and testing of programs. Substantial programming assignments. This is an introductory programming course that is not part of the major. It provides an introduction to programming for those that can benefit from becoming better programmers, but without committing to the major student's version of the course. Fall is offered in C; Winter and Spring are offered in Python. See professor's website for an updated syllabus.
+		<br>
+		<br>
+		Prerequisites: None<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-110" target="_blank">Course Page</a></p>
+</div>
+<div id="EECS111" title="EECS 111: Fundamentals of Computer Programming I" style="display:none">
+		<p>Instructor: Horswill<br><br>
+		This is an introductory course on the fundamentals of computer programming. I see this class as an opportunity for you, the student, to see what computer programming is all about and (more importantly) to see whether you want to spend the next few years doing more of it. This course will include weekly programming projects, readings, a midterm, and final examinations. Class participation is not optional.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-111" target="_blank">Course Page</a></p>
+</div>		
+<div id="EECS211" title="EECS 211: Fundamentals of Computer Programming II" style="display:none">
+		<p>Instructor: Henschen<br><br>
+		Object-oriented programming, classes and data hiding, dynamic object construction and destruction, derived classes and inheritance, virtual functions; functions, call by value/reference, overloading; abstract data types; standard template libraries; exception handling; introduction to UNIX, file processing, process management.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 110 or EECS 111
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-211" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS212" title="EECS 212: Discrete Mathematics for Computer Science" style="display:none">
+		<p>Instructor: Rahimi<br><br>
+		This course will discuss fundamental concepts and tools in discrete mathematics with emphasis on their applications to computer science. Example topics include logic and Boolean circuits; sets, functions, relations, databases, and finite automata; deterministic algorithms and randomized algorithms; analysis techniques based on counting methods and recurrence equations; trees and more general graphs.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 110 or EECS 111, and MATH 230
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-212" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS213" title="EECS 213: Intro to Computer Systems" style="display:none">
+		<p>Instructor: Hardavellas (Fall), Dinda (Spring)<br><br>
+		This course has four purposes: (1) to learn about the hierarchy of abstractions and implementations that comprise a modern computer system; (2) to demystify the machine and the tools that we use to program it; (3) to come up to speed on systems programming in C in the Unix environment; (4) to prepare students for upper-level systems courses.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 211 or EECS 230
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-213" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS214" title="EECS 214: Data Structures and Data Management" style="display:none">
+		<p>Instructor: Rahimi<br><br>
+		The design, implementation, and analysis of abstract data types, data structures and their algorithms. Topics include: data and procedural abstraction, linked lists, stacks, queues, binary trees, searching, and sorting. Required for computer science majors.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 211 or EECS 231
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-214" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS330" title="EECS 330: Human Computer Interaction" style="display:none">
+		<p>Instructor: Horn/Zhang<br><br>
+		 Introduction to human-computer interaction and the design of systems that work for people and their organizations. The goal is to understand the manner in which humans interact with, and use, their computers for productive work. The course focus is on the interface as designed artifact. The interface is a design problem without a single "correct" solution but which has many "good" solutions and a plethora of "bad" solutions. Class discussion centers on what makes an interface good and proven techniques for designing interfaces that meet human needs.
+		<br>
+		<br>
+		EECS Breadth/Depth - Interfaces<br><br>
+		Prerequisites: Prior Programming Experience
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-330" target="_blank">Course Page</a></p>
+</div>
+<div id="ECON201" title="ECON 201: Intro to Macroeconomics" style="display:none">
+		<p>Instructor: R. Walker<br><br>
+		Scarcity and choice; elements of demand and supply, determinants of aggregate output, employment, inflation, growth, and international balance of payments.
+		<br>
+		<br>
+		Economics Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.econ.northwestern.edu/classes/undergrad.html" target="_blank">Course Page</a></p>
+</div>
+<div id="ENGLISH206" title="ENGLISH 206: Reading & Writing Poetry" style="display:none">
+		<p>Instructor: M. Kinzie<br><br>
+		An introduction to the major forms of poetry in English from the dual perspective of the poet-critic. Creative work will be assigned in the form of poems and revisions; analytic writing will be assigned in the form of critiques of other members’ poems. A scansion exercise will be given early on. All of these exercises, creative and expository, as well as the required readings from the Anthology, are designed to help students increase their understanding of poetry rapidly and profoundly; the more wholehearted students’ participation, the more they will learn from the course. 
+		<br>
+		<br>
+		English Writing Prerequisite<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.english.northwestern.edu/courses/documents/EnglishNotes.pdf" target="_blank">Course Page</a></p>
+</div>		
+<div id="MATH212" title="MATH 212: Single Variable Calculus I" style="display:none">
+		<p>Instructor: Belt<br><br>
+		This calculus course covers differentiation and integration of functions of one variable, and concludes with a brief discussion of infinite series. Calculus is fundamental to many scientific disciplines including physics, engineering, and economics.
+		<br>
+		<br>
+		Mathematics Prerequisite<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="https://math.northwestern.edu/courses/schedule_13-14/fall.html" target="_blank">Course Page</a></p>
+</div>		 
+<div id="POLI_SCI201" title="POLI_SCI 201: Introduction to Political Theory" style="display:none">
+		<p>Instructor: Storey<br><br>
+		An introduction to the study of politics and political theory through the thought and texts of some of the most important western political theorists. A study of the ideas of some of the major political theorists from the ancient Greeks to the 20th Century. 
+		<br>
+		<br>
+		Political Science Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.polisci.northwestern.edu/undergraduate/documents/YearlyPlanner2013-14PUBLICVERSION.pdf" target="_blank">Course Page</a></p>
+</div>	
+<div id="STAT201" title="STAT 201: Statistics and Public Policy" style="display:none">
+		<p>Instructor: H. Jiang<br><br>
+		Basic statistical concepts and techniques introduced via case studies of interesting public policy issues. The cases illustrate methods of data collection and analysis.
+		<br>
+		<br>
+		Statistics Prerequisite<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.statistics.northwestern.edu/undergraduate/full-course-list.html" target="_blank">Course Page</a></p>
+</div>		 
+
 					
 <div class="ui-widget ui-helper-clearfix">
 
@@ -547,77 +713,118 @@
 			<button class="ui-button ui-widget-header" id="toggle-winter17" title="Toggle Winter 2017 Classes">Winter 2017</button>
 			<button class="ui-button ui-widget-header" id="toggle-spring17" title="Toggle Spring 2017 Classes">Spring 2017</button>
 		</span>
-		<span><h2 class="ui-widget-header page-header" id="subject-header" ><span>EECS</span></h2></span>
+		<span><h2 class="ui-widget-header page-header" id="subject-header" ><span>All</span></h2></span>
 		
 	</span>
 </div>
 
 
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
-    <li class="ui-widget-content ui-corner-tr fall core EECS" id="EECS101">
-    <h5 class="ui-widget-header">EECS 101</h5>
-    <p>An Intro to Computer Science<br><br>
+	<li class="ui-widget-content ui-corner-tr fall core ART_HIST" id="ART_HIST220">
+		<h5 class="ui-widget-header">ART_HIST 220</h5>
+		<p>Introduction to African Art<br><br>
 		Fall 2017<br>
-		MWF 3:00-3:50</p>
-    <a id="EECS101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li>
-  <li class="ui-widget-content ui-corner-tr fall spring EECS" id="EECS110">
-    <h5 class="ui-widget-header">EECS 110</h5>
-    <p>Intro to Computer Programming<br><br>
-		Fall/Spring 2017<br>
-		MWF 12:00-12:50</p>
-    <a id="EECS110" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li> 
- <li class="ui-widget-content ui-corner-tr fall winter core EECS" id="EECS111">
-    <h5 class="ui-widget-header">EECS 111</h5>
-    <p>Fundamentals of Programming I<br><br>
+		TuTh 9:30-10:50</p>
+		<a id="ART_HIST220" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall core CHEM" id="CHEM101">
+		<h5 class="ui-widget-header">CHEM 101</h5>
+		<p>General<br> Chemistry<br><br>
+		Fall 2017<br>
+		MTuW 9:00-9:50</p>
+		<a id="CHEM101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall winter core ECON" id="ECON201">
+		<h5 class="ui-widget-header">ECON 201</h5>
+		<p>Intro to Macroeconomics<br><br>
 		Fall/Winter 2017<br>
 		MWF 11:00-11:50</p>
-    <a id="EECS111" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li>
-<li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS211">
-    <h5 class="ui-widget-header">EECS 211</h5>
-    <p>Fundamentals of Programming II<br><br>
+		<a id="ECON201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+    <li class="ui-widget-content ui-corner-tr fall core EECS" id="EECS101">
+		<h5 class="ui-widget-header">EECS 101</h5>
+		<p>An Intro to Computer Science<br><br>
+		Fall 2017<br>
+		MWF 3:00-3:50</p>
+		<a id="EECS101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall spring EECS" id="EECS110">
+		<h5 class="ui-widget-header">EECS 110</h5>
+		<p>Intro to Computer Programming<br><br>
+		Fall/Spring 2017<br>
+		MWF 12:00-12:50</p>
+		<a id="EECS110" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li> 
+	<li class="ui-widget-content ui-corner-tr fall winter core EECS" id="EECS111">
+		<h5 class="ui-widget-header">EECS 111</h5>
+		<p>Fundamentals of Programming I<br><br>
+			Fall/Winter 2017<br>
+			MWF 11:00-11:50</p>
+		<a id="EECS111" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS211">
+		<h5 class="ui-widget-header">EECS 211</h5>
+		<p>Fundamentals of Programming II<br><br>
 		Spring 2017<br>
 		MTuWF 1:00-1:50</p>
-    <a id="EECS211" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li>
-<li class="ui-widget-content ui-corner-tr winter core EECS" id="EECS212">
-    <h5 class="ui-widget-header">EECS 212</h5>
-    <p>Discrete Mathematics for CS<br><br>
-		Winter 2017<br>
-		MWF 11:00-11:50</p>
-    <a id="EECS212" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li>
-  <li class="ui-widget-content ui-corner-tr fall spring core EECS" id="EECS213">
-    <h5 class="ui-widget-header">EECS 213</h5>
-    <p>Intro to Computer Systems<br><br>
-		Fall/Spring 2017<br>
-		TuTh 2:00-3:20</p>
-    <a id="EECS213" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li>
-  <li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS214">
-    <h5 class="ui-widget-header">EECS 214</h5>
-    <p>Data Structures and Data Management<br><br>
+		<a id="EECS211" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr winter core EECS" id="EECS212">
+		<h5 class="ui-widget-header">EECS 212</h5>
+		<p>Discrete Mathematics for CS<br><br>
+			Winter 2017<br>
+			MWF 11:00-11:50</p>
+		<a id="EECS212" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall spring core EECS" id="EECS213">
+		<h5 class="ui-widget-header">EECS 213</h5>
+		<p>Intro to Computer Systems<br><br>
+			Fall/Spring 2017<br>
+			TuTh 2:00-3:20</p>
+		<a id="EECS213" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS214">
+		<h5 class="ui-widget-header">EECS 214</h5>
+		<p>Data Structures and Data Management<br><br>
+			Spring 2017<br>
+			MWF 11:00-11:50</p>
+		<a id="EECS214" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr winter breadth depth EECS" id="EECS330">
+		<h5 class="ui-widget-header">EECS 330</h5>
+		<p>Human Computer Interaction<br><br>
+			Winter 2017<br>
+			MWF 1:00-1:50</p>
+		<a id="EECS330" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr winter spring core ENGLISH" id="ENGLISH206">
+		<h5 class="ui-widget-header">ENGLISH 206</h5>
+		<p>Reading & Writing Poetry<br><br>
+		Winter/Spring 2017<br>
+		MWF 2:00-2:50</p>
+		<a id="ENGLISH206" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core MATH" id="MATH212">
+		<h5 class="ui-widget-header">MATH 212</h5>
+		<p>Single Variable Calculus I<br><br>
 		Spring 2017<br>
-		MWF 11:00-11:50</p>
-    <a id="EECS214" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li>
-  <li class="ui-widget-content ui-corner-tr winter breadth depth EECS" id="EECS330">
-    <h5 class="ui-widget-header">EECS 330</h5>
-    <p>Human Computer Interaction<br><br>
-		Winter 2017<br>
-		MWF 1:00-1:50</p>
-    <a id="EECS330" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
-    <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
-  </li>
+		MWF 3:00-3:50</p>
+		<a id="MATH212" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core POLI_SCI" id="POLI_SCI201">
+		<h5 class="ui-widget-header">POLI_SCI 201</h5>
+		<p>Introduction to Political Theory<br><br>
+		Spring 2017<br>
+		MWF 4:00-4:50</p>
+		<a id="POLI_SCI201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall core STAT" id="STAT201">
+		<h5 class="ui-widget-header">STAT 201</h5>
+		<p>Statistics and Public Policy<br><br>
+		Spring 2017<br>
+		MWF 5:00-5:50</p>
+		<a id="STAT201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
 </ul>
 
 </div>
@@ -761,8 +968,6 @@
   </div>
 </div>
 
-
-
 <div class="schedule">
 	<div id="fall17" class="ui-widget-content ui-state-default quarter">
 	  <h4 class="ui-widget-header">Fall 2017</h4>
@@ -780,87 +985,6 @@
  
 </div>
 
-<div id="EECS101" title="EECS 101: An Intro to Computer Science for Everyone" style="display:none">
-		<p>Instructor: H. Zhang<br><br>
-		The primary goal of this course is to explore the whats, whys, and hows of computer science. Topics to be covered include the theory of computation (what computers can compute), algorithms for efficient computation (what to tell a computer to compute), programming languages (how to tell a computer what to compute), artificial intelligence (how your computer can do things your brain does), computational biology (how DNA-based biological systems are like programs), computer systems (e.g., how computers work together in networks like the Internet), and human computer interaction.
-		<br>
-		<br>
-		EECS Core Requirement<br><br>
-		Prerequisites: none
-		<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-101" target="_blank">Course Page</a></p>
-</div>		
-<div id="EECS110" title="EECS 110: Intro to Computer Programming" style="display:none">
-		<p>Instructors: Tumblin (Fall), Kuzmanovic (Spring)<br><br>
-		Introduction to programming practice using a modern programming language. Analysis and formulation of problems for computer solution. Systematic design, construction, and testing of programs. Substantial programming assignments. This is an introductory programming course that is not part of the major. It provides an introduction to programming for those that can benefit from becoming better programmers, but without committing to the major student's version of the course. Fall is offered in C; Winter and Spring are offered in Python. See professor's website for an updated syllabus.
-		<br>
-		<br>
-		Prerequisites: None<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-110" target="_blank">Course Page</a></p>
-</div>
-<div id="EECS111" title="EECS 111: Fundamentals of Computer Programming I" style="display:none">
-		<p>Instructor: Horswill<br><br>
-		This is an introductory course on the fundamentals of computer programming. I see this class as an opportunity for you, the student, to see what computer programming is all about and (more importantly) to see whether you want to spend the next few years doing more of it. This course will include weekly programming projects, readings, a midterm, and final examinations. Class participation is not optional.
-		<br>
-		<br>
-		EECS Core Requirement<br><br>
-		Prerequisites: none
-		<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-111" target="_blank">Course Page</a></p>
-</div>		
-<div id="EECS211" title="EECS 211: Fundamentals of Computer Programming II" style="display:none">
-		<p>Instructor: Henschen<br><br>
-		Object-oriented programming, classes and data hiding, dynamic object construction and destruction, derived classes and inheritance, virtual functions; functions, call by value/reference, overloading; abstract data types; standard template libraries; exception handling; introduction to UNIX, file processing, process management.
-		<br>
-		<br>
-		EECS Core Requirement<br><br>
-		Prerequisites: EECS 110 or EECS 111
-		<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-211" target="_blank">Course Page</a></p>
-</div>	
-<div id="EECS212" title="EECS 212: Discrete Mathematics for Computer Science" style="display:none">
-		<p>Instructor: Rahimi<br><br>
-		This course will discuss fundamental concepts and tools in discrete mathematics with emphasis on their applications to computer science. Example topics include logic and Boolean circuits; sets, functions, relations, databases, and finite automata; deterministic algorithms and randomized algorithms; analysis techniques based on counting methods and recurrence equations; trees and more general graphs.
-		<br>
-		<br>
-		EECS Core Requirement<br><br>
-		Prerequisites: EECS 110 or EECS 111, and MATH 230
-		<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-212" target="_blank">Course Page</a></p>
-</div>	
-<div id="EECS213" title="EECS 213: Intro to Computer Systems" style="display:none">
-		<p>Instructor: Hardavellas (Fall), Dinda (Spring)<br><br>
-		This course has four purposes: (1) to learn about the hierarchy of abstractions and implementations that comprise a modern computer system; (2) to demystify the machine and the tools that we use to program it; (3) to come up to speed on systems programming in C in the Unix environment; (4) to prepare students for upper-level systems courses.
-		<br>
-		<br>
-		EECS Core Requirement<br><br>
-		Prerequisites: EECS 211 or EECS 230
-		<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-213" target="_blank">Course Page</a></p>
-</div>	
-<div id="EECS214" title="EECS 214: Data Structures and Data Management" style="display:none">
-		<p>Instructor: Rahimi<br><br>
-		The design, implementation, and analysis of abstract data types, data structures and their algorithms. Topics include: data and procedural abstraction, linked lists, stacks, queues, binary trees, searching, and sorting. Required for computer science majors.
-		<br>
-		<br>
-		EECS Core Requirement<br><br>
-		Prerequisites: EECS 211 or EECS 231
-		<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-214" target="_blank">Course Page</a></p>
-</div>	
-<div id="EECS330" title="EECS 330: Human Computer Interaction" style="display:none">
-		<p>Instructor: Horn/Zhang<br><br>
-		 Introduction to human-computer interaction and the design of systems that work for people and their organizations. The goal is to understand the manner in which humans interact with, and use, their computers for productive work. The course focus is on the interface as designed artifact. The interface is a design problem without a single "correct" solution but which has many "good" solutions and a plethora of "bad" solutions. Class discussion centers on what makes an interface good and proven techniques for designing interfaces that meet human needs.
-		<br>
-		<br>
-		EECS Breadth/Depth - Interfaces<br><br>
-		Prerequisites: Prior Programming Experience
-		<br><br>
-		<a href="http://eecs.northwestern.edu/eecs-330" target="_blank">Course Page</a></p>
-</div>	 
 
-
- 
- 
 </body>
 </html>
