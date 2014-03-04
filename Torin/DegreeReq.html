@@ -33,7 +33,6 @@
 	.navigation { height: 4.5em; margin-bottom:.5em;}
 	.page-header {width: 47%;}
 	.nav-left {float:left; width:47%;}
-	/*.nav-right {float:right; width:47%;}*/
 
 	.inactive { background:lightgrey; border-color:lightgrey;}
 	.toggles {margin-left:0em;}
@@ -48,7 +47,6 @@
 	.scheduledClass li {float:none;margin-left:auto;margin-right:auto;overflow:auto;}
 	#toggle-fall17,#toggle-winter17, #toggle-spring17 {font-size:0.9em;width:6em;}
 	#subject {font-size:0.9em;width:8em;}
-	//.tab-background {height:2.8em;}
 	#tab-item1, #tab-item2{cursor:pointer;}
 	#tab-item1 a, #tab-item2 a{cursor:pointer;}
   
@@ -322,7 +320,6 @@
 			$fall = $(".fall").not(".winter").not(".spring");
 		}
 		$fall = $fall.not("#fall17 li");
-		//$fall.fadeToggle(400);
 		$fall.each(function() {
 			//If it's toggled off by subject
 			if ($(this).hasClass("toggled-off")){
@@ -365,7 +362,6 @@
 			$winter = $(".winter").not(".fall").not(".spring");
 		}
 		$winter = $winter.not("#winter17 li");
-		//$winter.fadeToggle(400);
 		$winter.each(function() {
 			//If it's toggled off by subject
 			if ($(this).hasClass("toggled-off")){
@@ -408,7 +404,6 @@
 			$spring = $(".spring").not(".winter").not(".fall");
 		}
 		$spring = $spring.not("#spring17 li");
-		//$spring.fadeToggle(400);
 		$spring.each(function() {
 			//If it's toggled off by subject
 			if ($(this).hasClass("toggled-off")){
@@ -576,26 +571,8 @@
 								}
 							}
 						});
-						/*
-						for(var i = 0; i < existingCourses.length; i++)
-						{	
-							if (existingCourseContainers[i].hasClass(subjectCode)){
-								existingCourseContainers[i].fadeIn('fast');
-							}/*
-							oldCourseName = existingCourses[i].textContent;
-							oldCourseName = oldCourseName.substring(oldCourseName.indexOf(" "), oldCourseName.length);
-							newCourseName = subjectCode + oldCourseName;
-							existingCourses[i].textContent = newCourseName;
-							*/
-						//}
-						//existingCourseContainers.fadeIn('fast');
 					}
-		})/*.focus(function() {
-				$(this).autocomplete("search", "");
-				$(this).find('input').select();
-				$(this).select();
-			})*/
-		  .on('mouseup', function() {
+		}).on('mouseup', function() {
 				$(this).autocomplete("search", "");
 				$(this).find('input').select();
 				$(this).select();
