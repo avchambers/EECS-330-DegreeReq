@@ -181,7 +181,6 @@
 	 
 			$item.find( "a.ui-icon-trash" ).remove();
 			$item.find( ".ui-icon-refresh" ).remove();
-	//		$item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
 			$item.append( trash_icon ).appendTo( $list ).fadeIn(function() {
 			  $item
 				.find( "img" )
@@ -212,8 +211,11 @@
 		
 		var elems = $("#gallery li").remove();
 		elems.sort(function(a,b) {
-			return ((a.id.toLowerCase()) > (b.id.toLowerCase()));
+			aID = a.id.replace("ART_HIST","1").replace("CHEM", "2").replace("ECON","3").replace("EECS","4").replace("ENGLISH","5").replace("MATH","6").replace("POLI_SCI","7").replace("STAT","8");
+			bID = b.id.replace("ART_HIST","1").replace("CHEM", "2").replace("ECON","3").replace("EECS","4").replace("ENGLISH","5").replace("MATH","6").replace("POLI_SCI","7").replace("STAT","8");
+			return (parseInt(aID) - parseInt(bID));
 		});
+		console.log(elems);
 		$($gallery).append(elems);
 		
 		$item.fadeIn();
@@ -885,7 +887,7 @@
 		MWF 4:00-4:50</p>
 		<a id="POLI_SCI201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
 	</li>
-	<li class="ui-widget-content ui-corner-tr fall core STAT" id="STAT201">
+	<li class="ui-widget-content ui-corner-tr spring core STAT" id="STAT201">
 		<h5 class="ui-widget-header">STAT 201</h5>
 		<p>Statistics and Public Policy<br><br>
 		Spring 2017<br>
