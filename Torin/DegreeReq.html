@@ -8,48 +8,56 @@
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <style>
-  /*#gallery { float: right; width: 47%; min-height: 35em; clear:both; }*/
-	#tabs { float: right; width: 47%; min-height: 35em; clear:both; }
-  #gallery.custom-state-active { background: #eee; }
-  .gallery li { float: left; width: 175px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; cursor:move; }
-  .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
-  .gallery li a { float: right; }
-  .gallery li a.ui-icon-zoomin { float: left; }
-  .gallery li img { width: 100%; cursor: move; }
+	#tabs { float: right; width: 47%;margin-right:5.5%; min-height: 35em; clear:both;background:#f6f6f6 url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; }
+	#gallery.custom-state-active { background: #eee; }
+	.gallery li { float: left; width: 175px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; cursor:move; }
+	.gallery li h5 { margin: 0 0 0.4em; cursor: move; }
+	.gallery li a { float: right; }
+	.gallery li a.ui-icon-zoomin { float: left; }
+	.gallery li img { width: 100%; cursor: move; }
+
+	#spring17, #winter17, #fall17 { float: left; width: 28%; min-height: 35em; padding: 1%; }
+	#spring17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+	#spring17 h4 .ui-icon { float: left; }
+
+	#winter17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+	#winter17 h4 .ui-icon { float: left; }
+
+	#fall17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+	#fall17 h4 .ui-icon { float: left; }
+
+	.ui-icon-zoomin { cursor:pointer; }
+
+	body { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;}
+	.navigation { height: 6.5em; margin-bottom:.5em;}
+	.page-header {width: 47%;}
+	.nav-left {float:left; width:47%;}
+	/*.nav-right {float:right; width:47%;}*/
+
+	.inactive { background:lightgrey; border-color:lightgrey;}
+	.toggles {margin-left:0em;}
+	#search-label {margin-right:.5em;font-size:0.9em;font-weight:bold;}
+	#toggle-label {margin-right:.5em;margin-left:.5em;font-size:0.9em;font-weight:bold;}
+	#submit-subject {display:none;}
+
+	.schedule {overflow:auto;width:47%}
+	.instructions{text-align:center;color:rgba(0, 0, 0, .8);margin-top:50%}
+	.activeHelp {color:rgba(0, 0, 0, .4);}
+
+	.scheduledClass li {float:none;margin-left:auto;margin-right:auto;overflow:auto;}
+	#toggle-fall17,#toggle-winter17, #toggle-spring17 {font-size:0.9em;width:6em;}
+	#subject {font-size:0.9em;}
+	//.tab-background {height:2.8em;}
+	#tab-item1, #tab-item2{cursor:pointer;}
+	#tab-item1 a, #tab-item2 a{cursor:pointer;}
   
-  #spring17, #winter17, #fall17 { float: left; width: 28%; min-height: 35em; padding: 1%; }
-  #spring17 h4 { line-height: 16px; margin: 0 0 0.4em; }
-  #spring17 h4 .ui-icon { float: left; }
- 
-  #winter17 h4 { line-height: 16px; margin: 0 0 0.4em; }
-  #winter17 h4 .ui-icon { float: left; }
-  
-  #fall17 h4 { line-height: 16px; margin: 0 0 0.4em; }
-  #fall17 h4 .ui-icon { float: left; }
-  
-  .ui-icon-zoomin { cursor:pointer; }
-  
-   body { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;}
-  .navigation { height: 6.5em; margin-bottom:2em;}
-  .page-header {width: 52%;}
-  .nav-left {float:left; width:50%;}
-  /*.nav-right {float:right; width:47%;}*/
-  
-  .inactive { background:lightgrey; border-color:lightgrey;}
-  .toggles {margin-left:0em;}
-  #search-label {margin-right:.5em;font-size:0.9em;font-weight:bold;}
-  #toggle-label {margin-right:.5em;margin-left:.5em;font-size:0.9em;font-weight:bold;}
-  #submit-subject {display:none;}
-  
-  .schedule {overflow:auto;}
-  .instructions{text-align:center;color:rgba(0, 0, 0, .8);margin-top:50%}
-  .activeHelp {color:rgba(0, 0, 0, .4);}
-  
-  .scheduledClass li {float:none;margin-left:auto;margin-right:auto;overflow:auto;}
-  #toggle-fall17,#toggle-winter17, #toggle-spring17 {font-size:0.9em;width:6em;}
-  #subject {font-size:0.9em;}
-  #tabs {background:#f6f6f6 url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x;}
-  
+	li.complete {color: green;}
+	li.needed {color: red;}
+	li.taking {color: #FFA500;}
+
+	span.complete {color: green;}
+	span.needed {color: red;}
+	span.taking {color: #FFA500;}
   
   </style>
   
@@ -376,6 +384,7 @@
 	
 	$(function(){ 
 		var availableSubjects = [
+			"All",
 			"Art History",
 			"Chemistry",
 			"Economics",
@@ -450,24 +459,43 @@
 								break;
 						}
 						
-						$("#subject-header").fadeOut('fast').html(subject).fadeIn('fast');
+						$("#subject-header").html(subject);
 						
 						var oldCourseName = "";
 						var newCourseName = "";
 						
-						existingCourseContainers.fadeOut('fast');
+						existingCourseContainers.fadeOut();
+						
+						existingCourseContainers.each(function()
+						{
+							if ($(this).hasClass(subjectCode)){
+								$(this).fadeIn();
+							}
+						});
+						/*
 						for(var i = 0; i < existingCourses.length; i++)
-						{							
+						{	
+							if (existingCourseContainers[i].hasClass(subjectCode)){
+								existingCourseContainers[i].fadeIn('fast');
+							}/*
 							oldCourseName = existingCourses[i].textContent;
 							oldCourseName = oldCourseName.substring(oldCourseName.indexOf(" "), oldCourseName.length);
 							newCourseName = subjectCode + oldCourseName;
 							existingCourses[i].textContent = newCourseName;
-						}
-						existingCourseContainers.fadeIn('fast');
+							*/
+						//}
+						//existingCourseContainers.fadeIn('fast');
 					}
-		}).focus(function() {
+		})/*.focus(function() {
 				$(this).autocomplete("search", "");
-			});		
+				$(this).find('input').select();
+				$(this).select();
+			})*/
+		  .on('mouseup', function() {
+				$(this).autocomplete("search", "");
+				$(this).find('input').select();
+				$(this).select();
+		  });		
 	});
 		
 	/*
@@ -480,26 +508,7 @@
   </script>
 </head>
 <body>
- <!--
- <div class="navigation ui-widget ui-helper-clearfix">
-	<span class="nav-left">
-		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
-		<button class="ui-button ui-widget-header" tabindex="1" >View Degree Progress</button>
-	</span>
-	<span class="nav-right">
-		<h2 class="ui-widget-header page-header" id="subject-header" >EECS</h2>
-		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject" tabindex="2" ></span>
-		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
-	
-		<span class="ui-widget"><label for="toggle-fall17" id="toggle-label">Quarters:</label></span>
-		<span class="toggles">
-			<button class="ui-button ui-widget-header" id="toggle-fall17" title="Toggle Fall 2017 Classes">Fall 2017</button>
-			<button class="ui-button ui-widget-header" id="toggle-winter17" title="Toggle Winter 2017 Classes">Winter 2017</button>
-			<button class="ui-button ui-widget-header" id="toggle-spring17" title="Toggle Spring 2017 Classes">Spring 2017</button>
-		</span>
-	</span>
-</div>
- -->
+					
 <div class="ui-widget ui-helper-clearfix">
 
 <div id="EECS101" title="EECS 101: An Intro to Computer Science for Everyone" style="display:none">
@@ -581,31 +590,40 @@
 		<a href="http://eecs.northwestern.edu/eecs-330" target="_blank">Course Page</a></p>
 </div>	 
 
+
+ <div class="navigation ui-widget ui-helper-clearfix">
+	<span class="nav-left">
+		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
+	</span>
+</div>
+
+
 <div id="tabs">
-  <ul>
-    <li><a href="#tabs-1">Available Classes</a></li>
-    <li><a href="#tabs-2">Degree Progress</a></li>
+  <ul class="tab-background">
+    <li id="tab-item1" tabindex="1"><a href="#tabs-1" >Available Classes</a></li>
+    <li id="tab-item2" tabindex="2"><a href="#tabs-2" >Degree Progress</a></li>
   </ul>
 <div id = "tabs-1">
 
  <div class="navigation ui-widget ui-helper-clearfix">
 	<span>
-		<h2 class="ui-widget-header page-header" id="subject-header" >EECS</h2>
-		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject" tabindex="2" ></span>
+		
+		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject" tabindex="3" ></span>
 		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
-	
 		<span class="ui-widget"><label for="toggle-fall17" id="toggle-label">Quarters:</label></span>
 		<span class="toggles">
 			<button class="ui-button ui-widget-header" id="toggle-fall17" title="Toggle Fall 2017 Classes">Fall 2017</button>
 			<button class="ui-button ui-widget-header" id="toggle-winter17" title="Toggle Winter 2017 Classes">Winter 2017</button>
 			<button class="ui-button ui-widget-header" id="toggle-spring17" title="Toggle Spring 2017 Classes">Spring 2017</button>
 		</span>
+		<span><h2 class="ui-widget-header page-header" id="subject-header" ><span>EECS</span></h2></span>
+		
 	</span>
 </div>
 
 
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
-    <li class="ui-widget-content ui-corner-tr fall core" id="EECS101">
+    <li class="ui-widget-content ui-corner-tr fall core EECS" id="EECS101">
     <h5 class="ui-widget-header">EECS 101</h5>
     <p>An Intro to Computer Science<br><br>
 		Fall 2017<br>
@@ -613,7 +631,7 @@
     <a id="EECS101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr fall spring" id="EECS110">
+  <li class="ui-widget-content ui-corner-tr fall spring EECS" id="EECS110">
     <h5 class="ui-widget-header">EECS 110</h5>
     <p>Intro to Computer Programming<br><br>
 		Fall/Spring 2017<br>
@@ -621,15 +639,15 @@
     <a id="EECS110" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li> 
- <li class="ui-widget-content ui-corner-tr fall winter core" id="EECS111">
+ <li class="ui-widget-content ui-corner-tr fall winter core EECS" id="EECS111">
     <h5 class="ui-widget-header">EECS 111</h5>
     <p>Fundamentals of Programming I<br><br>
 		Fall/Winter 2017<br>
-		MWThF 11:00-11:50</p>
+		MWF 11:00-11:50</p>
     <a id="EECS111" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-<li class="ui-widget-content ui-corner-tr spring core" id="EECS211">
+<li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS211">
     <h5 class="ui-widget-header">EECS 211</h5>
     <p>Fundamentals of Programming II<br><br>
 		Spring 2017<br>
@@ -637,7 +655,7 @@
     <a id="EECS211" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-<li class="ui-widget-content ui-corner-tr winter core" id="EECS212">
+<li class="ui-widget-content ui-corner-tr winter core EECS" id="EECS212">
     <h5 class="ui-widget-header">EECS 212</h5>
     <p>Discrete Mathematics for CS<br><br>
 		Winter 2017<br>
@@ -645,7 +663,7 @@
     <a id="EECS212" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr fall spring core" id="EECS213">
+  <li class="ui-widget-content ui-corner-tr fall spring core EECS" id="EECS213">
     <h5 class="ui-widget-header">EECS 213</h5>
     <p>Intro to Computer Systems<br><br>
 		Fall/Spring 2017<br>
@@ -653,7 +671,7 @@
     <a id="EECS213" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr spring core" id="EECS214">
+  <li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS214">
     <h5 class="ui-widget-header">EECS 214</h5>
     <p>Data Structures and Data Management<br><br>
 		Spring 2017<br>
@@ -661,7 +679,7 @@
     <a id="EECS214" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
     <!--<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a> -->
   </li>
-  <li class="ui-widget-content ui-corner-tr winter breadth depth" id="EECS330">
+  <li class="ui-widget-content ui-corner-tr winter breadth depth EECS" id="EECS330">
     <h5 class="ui-widget-header">EECS 330</h5>
     <p>Human Computer Interaction<br><br>
 		Winter 2017<br>
@@ -673,8 +691,10 @@
 
 </div>
 
+
+
 <div id="tabs-2">
-    <h2 class="ui-widget-header page-header" >Degree Progress Report<br>EECS (Weinberg)</h2>
+    <h2 class="ui-widget-header page-header" >Degree Progress Report<br><p style="font-size:.75em;margin:0;">EECS (Weinberg)</p></h2>
 <div id="accordion">
   <h3>Weinberg Distribution Requirements <span class="taking">(6 of 12 Courses Completed)</span></h3>
   <div>
@@ -810,11 +830,7 @@
   </div>
 </div>
 
- <div class="navigation ui-widget ui-helper-clearfix">
-	<span class="nav-left">
-		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
-	</span>
-</div>
+
 
 <div class="schedule">
 	<div id="fall17" class="ui-widget-content ui-state-default quarter">
