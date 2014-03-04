@@ -212,7 +212,7 @@
 		
 		var elems = $("#gallery li").remove();
 		elems.sort(function(a,b) {
-			return parseInt(a.id.substring(4,a.id.length)) > parseInt(b.id.substring(4,a.id.length));
+			return ((a.id.toLowerCase()) > (b.id.toLowerCase()));
 		});
 		$($gallery).append(elems);
 		
@@ -321,12 +321,15 @@
 		$fall.each(function() {
 			if ($(this).hasClass("toggled-off")){
 				$(this).fadeOut('fast');
+				$(this).addClass("quarter-toggled");
 				
 			} else {
 				if($(this).css("display")=="none") {
 					$(this).fadeIn('fast');
+					$(this).removeClass("quarter-toggled");
 				} else {
 					$(this).fadeOut('fast');
+					$(this).addClass("quarter-toggled");
 				}
 			}
 		
@@ -359,14 +362,18 @@
 		$winter.each(function() {
 			if ($(this).hasClass("toggled-off")){
 				$(this).fadeOut('fast');
+				$(this).addClass("quarter-toggled");
 				
 			} else {
 				if($(this).css("display")=="none") {
 					$(this).fadeIn('fast');
+					$(this).removeClass("quarter-toggled");
 				} else {
 					$(this).fadeOut('fast');
+					$(this).addClass("quarter-toggled");
 				}
 			}
+		
 		});
 		if($("#toggle-winter17").hasClass("inactive")){
 			$("#winter17 li").draggable("disable");
@@ -397,14 +404,18 @@
 		$spring.each(function() {
 			if ($(this).hasClass("toggled-off")){
 				$(this).fadeOut('fast');
+				$(this).addClass("quarter-toggled");
 				
 			} else {
 				if($(this).css("display")=="none") {
 					$(this).fadeIn('fast');
+					$(this).removeClass("quarter-toggled");
 				} else {
 					$(this).fadeOut('fast');
+					$(this).addClass("quarter-toggled");
 				}
 			}
+		
 		});
 		if($("#toggle-spring17").hasClass("inactive")){
 			$("#spring17 li").draggable("disable");
@@ -532,14 +543,16 @@
 						
 						existingCourseContainers.each(function()
 						{
-							if ($(this).hasClass(subjectCode)){
-								$(this).removeClass("toggled-off");
-								$(this).fadeIn('fast');
-							} else if (subjectCode == "ALL") {
-								$(this).removeClass("toggled-off");
-								$(this).fadeIn('fast');
-							} else {
-								$(this).addClass("toggled-off");
+							if(!$(this).hasClass("quarter-toggled")){
+								if ($(this).hasClass(subjectCode)){
+									$(this).removeClass("toggled-off");
+									$(this).fadeIn('fast');
+								} else if (subjectCode == "ALL") {
+									$(this).removeClass("toggled-off");
+									$(this).fadeIn('fast');
+								} else {
+									$(this).addClass("toggled-off");
+								}
 							}
 						});
 						/*
