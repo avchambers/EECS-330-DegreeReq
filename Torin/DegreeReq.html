@@ -282,15 +282,11 @@
       var $item = $( this ),
         $target = $( event.target );
  
-      if ( $target.is( "a.ui-icon-trash" ) ) {
-    //    deleteImage( $item );
+    if ( $target.is( "a.ui-icon-trash" ) ) {
 		recycleImage( $item );
-      } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+    } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
         viewLargerImage( $target );
-		}
-    //  } else if ( $target.is( "a.ui-icon-refresh" ) ) {
-    //    recycleImage( $item );
-    //  }
+	}
  
       return false;
     });
@@ -321,9 +317,11 @@
 		$fall = $fall.not("#fall17 li");
 		//$fall.fadeToggle(400);
 		$fall.each(function() {
+			//If it's toggled off by subject
 			if ($(this).hasClass("toggled-off")){
+			//Fade it out 
 				$(this).fadeOut('fast');
-				$(this).addClass("quarter-toggled");
+				$(this).toggleClass("quarter-toggled");
 				
 			} else {
 				if($(this).css("display")=="none") {
@@ -334,8 +332,8 @@
 					$(this).addClass("quarter-toggled");
 				}
 			}
-		
 		});
+		
 		if($("#toggle-fall17").hasClass("inactive")){
 			$("#fall17 li").draggable("disable");
 			$("#fall17 h4").addClass("ui-state-disabled");
@@ -362,9 +360,11 @@
 		$winter = $winter.not("#winter17 li");
 		//$winter.fadeToggle(400);
 		$winter.each(function() {
+			//If it's toggled off by subject
 			if ($(this).hasClass("toggled-off")){
+			//Fade it out 
 				$(this).fadeOut('fast');
-				$(this).addClass("quarter-toggled");
+				$(this).toggleClass("quarter-toggled");
 				
 			} else {
 				if($(this).css("display")=="none") {
@@ -375,7 +375,6 @@
 					$(this).addClass("quarter-toggled");
 				}
 			}
-		
 		});
 		if($("#toggle-winter17").hasClass("inactive")){
 			$("#winter17 li").draggable("disable");
@@ -404,9 +403,11 @@
 		$spring = $spring.not("#spring17 li");
 		//$spring.fadeToggle(400);
 		$spring.each(function() {
+			//If it's toggled off by subject
 			if ($(this).hasClass("toggled-off")){
+			//Fade it out 
 				$(this).fadeOut('fast');
-				$(this).addClass("quarter-toggled");
+				$(this).toggleClass("quarter-toggled");
 				
 			} else {
 				if($(this).css("display")=="none") {
@@ -417,7 +418,6 @@
 					$(this).addClass("quarter-toggled");
 				}
 			}
-		
 		});
 		if($("#toggle-spring17").hasClass("inactive")){
 			$("#spring17 li").draggable("disable");
@@ -545,14 +545,26 @@
 						
 						existingCourseContainers.each(function()
 						{
+							//If not toggled off based on the quarter
 							if(!$(this).hasClass("quarter-toggled")){
+							//Check to see if it's the right subject
 								if ($(this).hasClass(subjectCode)){
+							//If it is the right subject, toggle it on
 									$(this).removeClass("toggled-off");
 									$(this).fadeIn('fast');
 								} else if (subjectCode == "ALL") {
+							//If subject is "all", toggle it on
 									$(this).removeClass("toggled-off");
 									$(this).fadeIn('fast');
 								} else {
+							//Else signify that it is toggled off by subject
+									$(this).addClass("toggled-off");
+								}
+							} else{
+								if($(this).hasClass(subjectCode)){
+									$(this).removeClass("toggled-off");
+								}
+								else {
 									$(this).addClass("toggled-off");
 								}
 							}
