@@ -139,8 +139,6 @@
 	 
 			$item.find( "a.ui-icon-trash" ).remove();
 			$item.find( ".ui-icon-refresh" ).remove();
-			//$item.addClass("scheduledClass");
-	//		$item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
 			$item.append( trash_icon ).appendTo( $list ).fadeIn(function() {
 			  $item
 				.find( "img" )
@@ -160,7 +158,6 @@
 	 
 			$item.find( "a.ui-icon-trash" ).remove(); 
 			$item.find( ".ui-icon-refresh" ).remove();
-	//		$item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
 			$item.append( trash_icon ).appendTo( $list ).fadeIn(function() {
 			  $item
 				.find( "img" )
@@ -203,10 +200,10 @@
 			  .find( "a.ui-icon-trash" )
 				.remove()
 			  .end()
-			/*  .append( trash_icon )
+			  .append( trash_icon )
 			  .find( "img" )
 				.css( "height", "72px" )
-			  .end() */
+			  .end() 
 			  .appendTo( $gallery ).end();
 		
 		var elems = $("#gallery li").remove();
@@ -248,7 +245,17 @@
 			helper: "clone",
 			cursor: "move"
 		});
-		
+		$( "ul.gallery li" ).click(function( event ) {
+			var $item = $( this ),
+			$target = $( event.target );
+	 
+		if ( $target.is( "a.ui-icon-trash" ) ) {
+			recycleImage( $item );
+		} else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+			viewLargerImage( $target );
+		}
+		  return false;
+		});
 		
 		});
 	  }
@@ -275,21 +282,21 @@
 		$(dia).addClass("opened");
 		}})
 	}
-    
  
     // resolve the icons behavior with event delegation
-    $( "ul.gallery > li" ).click(function( event ) {
-      var $item = $( this ),
-        $target = $( event.target );
- 
-    if ( $target.is( "a.ui-icon-trash" ) ) {
-		recycleImage( $item );
-    } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
-        viewLargerImage( $target );
-	}
- 
-      return false;
-    });
+    $(document).ready(function(){
+		$( "ul.gallery li" ).click(function( event ) {
+			var $item = $( this ),
+			$target = $( event.target );
+	 
+		if ( $target.is( "a.ui-icon-trash" ) ) {
+			recycleImage( $item );
+		} else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+			viewLargerImage( $target );
+		}
+		  return false;
+		});
+	});
 	
 	$("ul#core-class-progress li a").click(function() {
 		var dia = $(this).attr("id");
