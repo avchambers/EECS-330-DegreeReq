@@ -304,7 +304,20 @@
 			$fall = $(".fall").not(".winter").not(".spring");
 		}
 		$fall = $fall.not("#fall17 li");
-		$fall.fadeToggle(400);
+		//$fall.fadeToggle(400);
+		$fall.each(function() {
+			if ($(this).hasClass("toggled-off")){
+				$(this).fadeOut('fast');
+				
+			} else {
+				if($(this).css("display")=="none") {
+					$(this).fadeIn('fast');
+				} else {
+					$(this).fadeOut('fast');
+				}
+			}
+		
+		});
 		if($("#toggle-fall17").hasClass("inactive")){
 			$("#fall17 li").draggable("disable");
 			$("#fall17 h4").addClass("ui-state-disabled");
@@ -329,7 +342,19 @@
 			$winter = $(".winter").not(".fall").not(".spring");
 		}
 		$winter = $winter.not("#winter17 li");
-		$winter.fadeToggle(400);
+		//$winter.fadeToggle(400);
+		$winter.each(function() {
+			if ($(this).hasClass("toggled-off")){
+				$(this).fadeOut('fast');
+				
+			} else {
+				if($(this).css("display")=="none") {
+					$(this).fadeIn('fast');
+				} else {
+					$(this).fadeOut('fast');
+				}
+			}
+		});
 		if($("#toggle-winter17").hasClass("inactive")){
 			$("#winter17 li").draggable("disable");
 			$("#winter17 h4").addClass("ui-state-disabled");
@@ -355,8 +380,19 @@
 			$spring = $(".spring").not(".winter").not(".fall");
 		}
 		$spring = $spring.not("#spring17 li");
-		$spring.fadeToggle(400);
-		//$("#spring17").fadeToggle(400);
+		//$spring.fadeToggle(400);
+		$spring.each(function() {
+			if ($(this).hasClass("toggled-off")){
+				$(this).fadeOut('fast');
+				
+			} else {
+				if($(this).css("display")=="none") {
+					$(this).fadeIn('fast');
+				} else {
+					$(this).fadeOut('fast');
+				}
+			}
+		});
 		if($("#toggle-spring17").hasClass("inactive")){
 			$("#spring17 li").draggable("disable");
 			$("#spring17 h4").addClass("ui-state-disabled");
@@ -484,9 +520,13 @@
 						existingCourseContainers.each(function()
 						{
 							if ($(this).hasClass(subjectCode)){
+								$(this).removeClass("toggled-off");
 								$(this).fadeIn('fast');
 							} else if (subjectCode == "ALL") {
+								$(this).removeClass("toggled-off");
 								$(this).fadeIn('fast');
+							} else {
+								$(this).addClass("toggled-off");
 							}
 						});
 						/*
