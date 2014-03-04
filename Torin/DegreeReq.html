@@ -256,9 +256,11 @@
     // image preview function, demonstrating the ui.dialog used as a modal window
     function viewLargerImage( $link ) {
 		var dia = $link.attr("id");
+		dia = "div#" + dia;
 		console.log(dia);
 		$(function() {
-		$(document.getElementById(dia)).dialog({ width: 750 });
+		//$(document.getElementById(dia)).dialog({ width: 750 });
+		$(dia).dialog({ width: 750 });
 		})
     }
  
