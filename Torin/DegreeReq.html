@@ -279,6 +279,14 @@
       return false;
     });
 	
+	$("ul#core-class-progress li a").click(function() {
+		var dia = $(this).attr("id");
+		console.log(dia);
+		$(function() {
+		$(document.getElementById(dia)).dialog({ width: 750 });
+		})
+	});
+	
 	$( "#toggle-fall17").click(function() {
 		var $fall;
 		$(this).toggleClass("inactive");
@@ -757,13 +765,13 @@
 	</div>
 	<h3>Core Courses <span class="taking">(4 of 6 Courses Completed, 1 Course Pending)</span></h3>
 	<div>
-		<ul>
-			<li class="needed">EECS 101 - Needs to be Taken</li>
-			<li class="complete">EECS 111 - Completed!</li>
-			<li class="complete">EECS 211 - Completed!</li>
-			<li class="taking">EECS 212 - Taking This Quarter</li>
-			<li class="complete">EECS 213 - Completed!</li>
-			<li class="complete">EECS 214 - Completed!</li>
+		<ul id="core-class-progress">
+			<li class="needed"><a href="javascript:void(0)" id="EECS101">EECS 101</a> - Needs to be Taken</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS111">EECS 111</a> - Completed!</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS211">EECS 211</a> - Completed!</li>
+			<li class="taking"><a href="javascript:void(0)" id="EECS212">EECS 212</a> - Taking This Quarter</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS213">EECS 213</a> - Completed!</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS214">EECS 214</a> - Completed!</li>
 		</ul>
 	</div>
 	<h3>Breadth Areas <span class="taking">(2 of 5 Courses Completed, 1 Course Pending)</span></h3>
