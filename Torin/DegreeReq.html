@@ -10,6 +10,7 @@
   <style>
 	#tabs { float: right; width: 46%;margin-right:5.5%; min-height: 35em; clear:both;background:#f6f6f6 url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; }
 	#gallery.custom-state-active { background: #eee; }
+	#gallery {margin-top:2%;}
 	.gallery li { float: left; width: 175px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; cursor:move; }
 	.gallery li h5 { margin: 0 0 0.4em; cursor: move; }
 	.gallery li a { float: right; }
@@ -514,12 +515,12 @@
 		  });		
 	});
 		
-	/*
-	Moves the left side of the page (the quarterly schedules) with the window when you scroll down
+	
+	//Moves the left side of the page (the quarterly schedules) with the window when you scroll down
 	$(window).scroll(function(){
 		$(".quarter").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
 	});
-	*/
+	
   });
   </script>
 </head>
