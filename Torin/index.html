@@ -1,450 +1,1066 @@
 <!doctype html>
-<html lang="us">
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>jQuery UI Example Page</title>
-	<link href="css/ui-lightness/jquery-ui-1.10.4.custom.css" rel="stylesheet">
-	<script src="js/jquery-1.10.2.js"></script>
-	<script src="js/jquery-ui-1.10.4.custom.js"></script>
-	<script>
-	$(function() {
-		
-		$( "#accordion" ).accordion();
-		
+  <meta charset="utf-8">
+  <title>Schedule Planner Prototype</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <link href="css/ui-lightness/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <style>
+	#tabs { float: right; width: 46%;margin-right:5.5%; min-height: 35em; clear:both;background:#f6f6f6 url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; }
+	#gallery.custom-state-active { background: #eee; }
+	#gallery {margin-top:2%;}
+	.gallery li { float: left; width: 175px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; cursor:move; }
+	.gallery li h5 { margin: 0 0 0.4em; cursor: move; }
+	.gallery li a { float: right; }
+	.gallery li a.ui-icon-zoomin { float: left; }
+	.gallery li img { width: 100%; cursor: move; }
 
+	#spring17, #winter17, #fall17 { float: left; width: 30%; min-height: 35em; padding: 1%; }
+	#spring17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+	#spring17 h4 .ui-icon { float: left; }
+
+	#winter17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+	#winter17 h4 .ui-icon { float: left; }
+
+	#fall17 h4 { line-height: 16px; margin: 0 0 0.4em; }
+	#fall17 h4 .ui-icon { float: left; }
+
+	.ui-icon-zoomin { cursor:pointer; }
+
+	body { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;}
+	.navigation { height: 4.5em; margin-bottom:.5em;}
+	.page-header {width: 47%;}
+	.nav-left {float:left; width:47%;}
+
+	.inactive { background:lightgrey; border-color:lightgrey;}
+	.toggles {margin-left:0em;}
+	#search-label {margin-right:.5em;font-size:0.9em;font-weight:bold;}
+	#toggle-label {margin-right:.5em;margin-left:.5em;font-size:0.9em;font-weight:bold;}
+	#submit-subject {display:none;}
+
+	.schedule {overflow:auto;width:47%}
+	.instructions{text-align:center;color:rgba(0, 0, 0, .8);margin-top:50%}
+	.activeHelp {color:rgba(0, 0, 0, .4);}
+
+	.scheduledClass li {float:none;margin-left:auto;margin-right:auto;overflow:auto;}
+	#toggle-fall17,#toggle-winter17, #toggle-spring17 {font-size:0.9em;width:6em;}
+	#subject {font-size:0.9em;width:8em;}
+	#tab-item1, #tab-item2{cursor:pointer;}
+	#tab-item1 a, #tab-item2 a{cursor:pointer;}
+  
+	li.complete {color: green;}
+	li.needed {color: red;}
+	li.taking {color: #FFA500;}
+
+	span.complete {color: green;}
+	span.needed {color: red;}
+	span.taking {color: #FFA500;}
+	
+	#tabs-1 {padding:1em 0.4em;}
+	#reset-button {font-size:0.9em;width:6em;}
+	#reset-container {float:right;margin-right:5.5%;margin-top:2%;}
+  
+  </style>
+  
+  <script>
+  $(function() {
+  // there's the gallery and the trash
+    var $gallery = $( "#gallery" ),
+		$fall17 = $( "#fall17" ),
+		$winter17 = $( "#winter17" ),
+		$spring17 = $( "#spring17" );
+ 
+    // let the gallery items be draggable
+    $( "li", $gallery ).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move",
+	  start: function( event, ui ) {
+		$(".instructions").addClass("activeHelp");
+	  },
+	  stop: function( event, ui) {
+		$(".instructions").removeClass("activeHelp");
+	  }
+    });
+ 
+	// let the fall be droppable, accepting the gallery items
+    $fall17.droppable({
+      /*accept: "#gallery > li, #winter17 li, #spring17 li",*/
+	  /*accept: "#gallery .fall, #winter17 > .fall, #spring17 > .fall",*/
+	  accept: ".fall",
+      activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+        addClassFall17( ui.draggable );
+      }
+    });
+ 
+	// let the winter be droppable, accepting the gallery items
+    $winter17.droppable({
+      /*accept: "#gallery .winter, #fall17 li, #spring17 li",*/
+	  accept: ".winter",
+      activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+		addClassWinter17( ui.draggable );
+      }
+    });
+ 
+	// let the spring be droppable, accepting the gallery items
+    $spring17.droppable({
+      /*accept: "#gallery .spring, #fall17 li, #winter17 li",*/
+	  accept: ".spring",
+      activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+		addClassSpring17( ui.draggable );
+      }
+    }); 
+	
+    // let the gallery be droppable as well, accepting items from the trash
+    $gallery.droppable({
+      accept:	"#winter17 li, #fall17 li, #spring17 li",
+      activeClass: "custom-state-active",
+      drop: function( event, ui ) {
+        recycleImage( ui.draggable );
+      }
+    });
+ 
+    // image deletion function
+    //var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
+	var trash_icon = "<a href='javascript:void(0)' title='Remove Class' class='ui-icon ui-icon-trash'>Remove Class</a>";
+    function addClassWinter17( $item ) {
+      if ($item.hasClass("winter")) {
+		  $item.fadeOut(function() {
+			var $list = $( "ul", $winter17 ).length ?
+			  $( "ul", $winter17 ) :
+			  $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $winter17 );
+	 
+			$item.find( "a.ui-icon-trash" ).remove();
+			$item.find( ".ui-icon-refresh" ).remove();
+			$item.append( trash_icon ).appendTo( $list ).fadeIn(function() {
+			  $item
+				.find( "img" )
+				  .animate({ height: "72px" });
+			});
+		  });
+		}
+		$(".instructions").hide();
+    }
+	
+	function addClassFall17( $item ) {
+		if ($item.hasClass("fall")) { 
+		  $item.fadeOut(function() {
+			var $list = $( "ul", $fall17 ).length ?
+			  $( "ul", $fall17 ) :
+			  $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $fall17 );
+	 
+			$item.find( "a.ui-icon-trash" ).remove(); 
+			$item.find( ".ui-icon-refresh" ).remove();
+			$item.append( trash_icon ).appendTo( $list ).fadeIn(function() {
+			  $item
+				.find( "img" )
+				  .animate({ height: "72px" });	
+			});
+		  });
+		 }
+		 
+		 $(".instructions").hide();
+    }
+	
+	function addClassSpring17( $item ) {
+		if ($item.hasClass("spring")) {		
+			$item.fadeOut(function() {
+			var $list = $( "ul", $spring17 ).length ?
+			  $( "ul", $spring17 ) :
+			  $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $spring17 );
+	 
+			$item.find( "a.ui-icon-trash" ).remove();
+			$item.find( ".ui-icon-refresh" ).remove();
+			$item.append( trash_icon ).appendTo( $list ).fadeIn(function() {
+			  $item
+				.find( "img" )
+				  .animate({ height: "72px" });
+			});
+		  });
+		}
 		
-		var availableTags = [
-			"ActionScript",
-			"AppleScript",
-			"Asp",
-			"BASIC",
-			"C",
-			"C++",
-			"Clojure",
-			"COBOL",
-			"ColdFusion",
-			"Erlang",
-			"Fortran",
-			"Groovy",
-			"Haskell",
-			"Java",
-			"JavaScript",
-			"Lisp",
-			"Perl",
-			"PHP",
-			"Python",
-			"Ruby",
-			"Scala",
-			"Scheme"
-		];
-		$( "#autocomplete" ).autocomplete({
-			source: availableTags
+		$(".instructions").hide();
+    }
+ 
+    // image recycle function
+    var trash_icon = "<a href='javascript:void(0)' title='Remove Class' class='ui-icon ui-icon-trash'>Remove Class</a>";
+    function recycleImage( $item ) {
+      
+	  if (!$item.draggable("option", "disabled")) {
+		  $item.fadeOut(function() {
+			$item
+		//      .find( "a.ui-icon-refresh" )
+			  .find( "a.ui-icon-trash" )
+				.remove()
+			  .end()
+			  .append( trash_icon )
+			  .find( "img" )
+				.css( "height", "72px" )
+			  .end() 
+			  .appendTo( $gallery ).end();
+		
+		var elems = $("#gallery li").remove();
+		elems.sort(function(a,b) {
+			aID = a.id.replace("ART_HIST","1").replace("CHEM", "2").replace("ECON","3").replace("EECS","4").replace("ENGLISH","5").replace("MATH","6").replace("POLI_SCI","7").replace("STAT","8");
+			bID = b.id.replace("ART_HIST","1").replace("CHEM", "2").replace("ECON","3").replace("EECS","4").replace("ENGLISH","5").replace("MATH","6").replace("POLI_SCI","7").replace("STAT","8");
+			return (parseInt(aID) - parseInt(bID));
+		});
+		console.log(elems);
+		$($gallery).append(elems);
+		
+		$item.fadeIn();
+		
+		$( "#gallery li" ).draggable({
+			cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+			revert: "invalid", // when not dropped, the item will revert back to its initial position
+			containment: "document",
+			helper: "clone",
+			cursor: "move"
+		});
+		$( "#fall17 li").draggable({
+			cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+			revert: "invalid", // when not dropped, the item will revert back to its initial position
+			containment: "document",
+			helper: "clone",
+			cursor: "move"
+		});
+		$( "#winter17 li").draggable({
+			cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+			revert: "invalid", // when not dropped, the item will revert back to its initial position
+			containment: "document",
+			helper: "clone",
+			cursor: "move"
+		});
+		$( "#spring17 li" ).draggable({
+			cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+			revert: "invalid", // when not dropped, the item will revert back to its initial position
+			containment: "document",
+			helper: "clone",
+			cursor: "move"
+		});
+		$( "ul.gallery li" ).click(function( event ) {
+			var $item = $( this ),
+			$target = $( event.target );
+	 
+		if ( $target.is( "a.ui-icon-trash" ) ) {
+			recycleImage( $item );
+		} else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+			viewLargerImage( $target );
+		}
+		  return false;
 		});
 		
-
-		
-		$( "#button" ).button();
-		$( "#radioset" ).buttonset();
-		
-
-		
-		$( "#tabs" ).tabs();
-		
-
-		
-		$( "#dialog" ).dialog({
-			autoOpen: false,
-			width: 400,
-			buttons: [
-				{
-					text: "Ok",
-					click: function() {
-						$( this ).dialog( "close" );
-					}
-				},
-				{
-					text: "Cancel",
-					click: function() {
-						$( this ).dialog( "close" );
-					}
+		});
+	  }
+    };
+    
+ 
+    // image preview function, demonstrating the ui.dialog used as a modal window
+    function viewLargerImage( $link ) {
+		var dia = $link.attr("id");
+		dia = "div#" + dia;
+		console.log(dia);
+		$(function() {
+		//$(document.getElementById(dia)).dialog({ width: 750 });
+		if($(dia).hasClass("opened")) {
+			$(dia).dialog("open");
+		}
+		else {
+		$(dia).dialog({ 
+			width: 750,
+			close: function(event, ui) {
+				$(dia).removeClass("opened");
 				}
-			]
-		});
-
-		// Link to open the dialog
-		$( "#dialog-link" ).click(function( event ) {
-			$( "#dialog" ).dialog( "open" );
-			event.preventDefault();
-		});
-		
-
-		
-		$( "#datepicker" ).datepicker({
-			inline: true
-		});
-		
-
-		
-		$( "#slider" ).slider({
-			range: true,
-			values: [ 17, 67 ]
+			});
+		$(dia).addClass("opened");
+		}})
+	}
+ 
+    // resolve the icons behavior with event delegation
+    $(document).ready(function(){
+		$( "ul.gallery li" ).click(function( event ) {
+			var $item = $( this ),
+			$target = $( event.target );
+	 
+		if ( $target.is( "a.ui-icon-trash" ) ) {
+			recycleImage( $item );
+		} else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+			viewLargerImage( $target );
+		}
+		  return false;
 		});
 		
-
-		
-		$( "#progressbar" ).progressbar({
-			value: 20
+		$("#reset-button").click(function() {
+			if(confirm("Are you sure you want to reset? Your current schedule will be lost."))
+				self.location.reload();
 		});
-		
-
-		// Hover states on the static widgets
-		$( "#dialog-link, #icons li" ).hover(
-			function() {
-				$( this ).addClass( "ui-state-hover" );
-			},
-			function() {
-				$( this ).removeClass( "ui-state-hover" );
-			}
-		);
 	});
-	</script>
-	<style>
-	body{
-		font: 62.5% "Trebuchet MS", sans-serif;
-		margin: 50px;
-	}
-	.demoHeaders {
-		margin-top: 2em;
-	}
-	#dialog-link {
-		padding: .4em 1em .4em 20px;
-		text-decoration: none;
-		position: relative;
-	}
-	#dialog-link span.ui-icon {
-		margin: 0 5px 0 0;
-		position: absolute;
-		left: .2em;
-		top: 50%;
-		margin-top: -8px;
-	}
-	#icons {
-		margin: 0;
-		padding: 0;
-	}
-	#icons li {
-		margin: 2px;
-		position: relative;
-		padding: 4px 0;
-		cursor: pointer;
-		float: left;
-		list-style: none;
-	}
-	#icons span.ui-icon {
-		float: left;
-		margin: 0 4px;
-	}
-	.fakewindowcontain .ui-widget-overlay {
-		position: absolute;
-	}
-	</style>
+	
+	$("ul#core-class-progress li a").click(function() {
+		var dia = $(this).attr("id");
+		console.log(dia);
+		$(function() {
+		$(document.getElementById(dia)).dialog({ width: 750 });
+		})
+	});
+	
+	$( "#toggle-fall17").click(function() {
+		var $fall;
+		$(this).toggleClass("inactive");
+		if ($("#toggle-winter17").hasClass("inactive")) {
+			if($("#toggle-spring17").hasClass("inactive")){
+				$fall = $(".fall").not("#spring17 li").not("#winter17 li");
+			}
+			else {
+				$fall = $(".fall").not(".spring").not("#winter17 li");
+			}
+		} else if ($("#toggle-spring17").hasClass("inactive")) {
+			$fall = $(".fall").not(".winter").not("#spring17 li");
+		} else {
+			$fall = $(".fall").not(".winter").not(".spring");
+		}
+		$fall = $fall.not("#fall17 li");
+		$fall.each(function() {
+			//If it's toggled off by subject
+			if ($(this).hasClass("toggled-off")){
+			//Fade it out 
+				$(this).fadeOut('fast');
+				$(this).toggleClass("quarter-toggled");
+				
+			} else {
+				if($(this).css("display")=="none") {
+					$(this).fadeIn('fast');
+					$(this).removeClass("quarter-toggled");
+				} else {
+					$(this).fadeOut('fast');
+					$(this).addClass("quarter-toggled");
+				}
+			}
+		});
+		
+		if($("#toggle-fall17").hasClass("inactive")){
+			$("#fall17 li").draggable("disable");
+			$("#fall17 h4").addClass("ui-state-disabled");
+		} else {
+			$("#fall17 li").draggable("enable");
+			$("#fall17 h4").removeClass("ui-state-disabled");
+		}
+	});
+	$( "#toggle-winter17").click(function() {
+		var $winter;
+		$(this).toggleClass("inactive");
+		if ($("#toggle-fall17").hasClass("inactive")) {
+			if($("#toggle-spring17").hasClass("inactive")){
+				$winter = $(".winter").not("#fall17 li").not("#spring17 li");
+			}
+			else {
+				$winter = $(".winter").not(".spring").not("#fall17 li");
+			}
+		} else if ($("#toggle-spring17").hasClass("inactive")) {
+			$winter = $(".winter").not(".fall").not("#spring17 li");
+		} else {
+			$winter = $(".winter").not(".fall").not(".spring");
+		}
+		$winter = $winter.not("#winter17 li");
+		$winter.each(function() {
+			//If it's toggled off by subject
+			if ($(this).hasClass("toggled-off")){
+			//Fade it out 
+				$(this).fadeOut('fast');
+				$(this).toggleClass("quarter-toggled");
+				
+			} else {
+				if($(this).css("display")=="none") {
+					$(this).fadeIn('fast');
+					$(this).removeClass("quarter-toggled");
+				} else {
+					$(this).fadeOut('fast');
+					$(this).addClass("quarter-toggled");
+				}
+			}
+		});
+		if($("#toggle-winter17").hasClass("inactive")){
+			$("#winter17 li").draggable("disable");
+			$("#winter17 h4").addClass("ui-state-disabled");
+		} else {
+			$("#winter17 li").draggable("enable");
+			$("#winter17 h4").removeClass("ui-state-disabled");
+		}
+	});
+	
+	$( "#toggle-spring17").click(function() {
+		var $spring;
+		$(this).toggleClass("inactive");
+		if ($("#toggle-fall17").hasClass("inactive")) {
+			if($("#toggle-winter17").hasClass("inactive")){
+				$spring = $(".spring").not("#fall17 li").not("#winter17 li");
+			}
+			else {
+				$spring = $(".spring").not(".winter").not("#fall17 li");
+			}
+		} else if ($("#toggle-winter17").hasClass("inactive")) {
+			$spring = $(".spring").not(".fall").not("#winter17 li");
+		} else {
+			$spring = $(".spring").not(".winter").not(".fall");
+		}
+		$spring = $spring.not("#spring17 li");
+		$spring.each(function() {
+			//If it's toggled off by subject
+			if ($(this).hasClass("toggled-off")){
+			//Fade it out 
+				$(this).fadeOut('fast');
+				$(this).toggleClass("quarter-toggled");
+				
+			} else {
+				if($(this).css("display")=="none") {
+					$(this).fadeIn('fast');
+					$(this).removeClass("quarter-toggled");
+				} else {
+					$(this).fadeOut('fast');
+					$(this).addClass("quarter-toggled");
+				}
+			}
+		});
+		if($("#toggle-spring17").hasClass("inactive")){
+			$("#spring17 li").draggable("disable");
+			$("#spring17 h4").addClass("ui-state-disabled");
+		} else {
+			$("#spring17 li").draggable("enable");
+			$("#spring17 h4").removeClass("ui-state-disabled");
+		}
+	});
+	
+	$(function() {
+		$( "#tabs" ).tabs();
+	});
+	
+	$(function() {
+		$( "#accordion" ).accordion({
+		  heightStyle: "content"
+		});
+		$( "#accordion" ).accordion({
+		  collapsible: true, active: false
+		});
+		$( "#accordion2" ).accordion({
+		  heightStyle: "content"
+		});
+		$( "#accordion2" ).accordion({
+		  collapsible: true, active: false
+		});
+		$( "#accordion3" ).accordion({
+		  heightStyle: "content"
+		});
+		$( "#accordion3" ).accordion({
+		  collapsible: true, active: false
+		});
+	});
+	
+	$(function(){ 
+		var availableSubjects = [
+			"All",
+			"Art History",
+			"Chemistry",
+			"Economics",
+			"EECS",
+			"English",
+			"Mathematics",
+			"Political Science",
+			"Statistics"
+		];
+		$("#subject").autocomplete({
+			source: availableSubjects,
+			minLength: 0,
+			autoFocus: false,
+			delay: 100,
+			select: function(event, ui)	{
+						var oldSubject = $("#subject-header").html();
+						var oldSubjectCode = oldSubject;
+						var existingCourses = $("li h5", $gallery);
+						var existingCourseContainers = $("li", $gallery);
+						var subject = ui.item.value;
+						var subjectCode = subject;
+						switch(subject) {
+							case "Art History":
+								subjectCode = "ART_HIST";
+								break;
+							case "Chemistry":
+								subjectCode = "CHEM";
+								break;
+							case "Economics":
+								subjectCode = "ECON";
+								break;
+							case "EECS":
+								subjectCode = "EECS";
+								break;
+							case "English":
+								subjectCode = "ENGLISH";
+								break;
+							case "Mathematics":
+								subjectCode = "MATH";
+								break;
+							case "Political Science":
+								subjectCode = "POLI_SCI";
+								break;
+							case "Statistics":
+								subjectCode = "STAT";
+								break;
+							case "All":
+								subjectCode = "ALL";
+								break;
+						}
+						switch(oldSubject) {
+							case "Art History":
+								oldSubjectCode = "ART_HIST";
+								break;
+							case "Chemistry":
+								oldSubjectCode = "CHEM";
+								break;
+							case "Economics":
+								oldSubjectCode = "ECON";
+								break;
+							case "EECS":
+								oldSubjectCode = "EECS";
+								break;
+							case "English":
+								oldSubjectCode = "ENGLISH";
+								break;
+							case "Mathematics":
+								oldSubjectCode = "MATH";
+								break;
+							case "Political Science":
+								oldSubjectCode = "POLI_SCI";
+								break;
+							case "Statistics":
+								oldSubjectCode = "STAT";
+								break;
+							case "All":
+								oldSubjectCode = "ALL";
+								break;
+						}
+						
+						$("#subject-header").html(subject);
+						
+						var oldCourseName = "";
+						var newCourseName = "";
+						
+						existingCourseContainers.fadeOut('fast');
+						
+						existingCourseContainers.each(function()
+						{
+							//If not toggled off based on the quarter
+							if(!$(this).hasClass("quarter-toggled")){
+							//Check to see if it's the right subject
+								if ($(this).hasClass(subjectCode)){
+							//If it is the right subject, toggle it on
+									$(this).removeClass("toggled-off");
+									$(this).fadeIn('fast');
+								} else if (subjectCode == "ALL") {
+							//If subject is "all", toggle it on
+									$(this).removeClass("toggled-off");
+									$(this).fadeIn('fast');
+								} else {
+							//Else signify that it is toggled off by subject
+									$(this).addClass("toggled-off");
+								}
+							} else{
+								if($(this).hasClass(subjectCode)){
+									$(this).removeClass("toggled-off");
+								}
+								else {
+									$(this).addClass("toggled-off");
+								}
+							}
+						});
+					}
+		}).on('mouseup', function() {
+				$(this).autocomplete("search", "");
+				$(this).find('input').select();
+				$(this).select();
+		  });		
+	});
+
+			
+	//Moves the left side of the page (the quarterly schedules) with the window when you scroll down
+	/*$(window).scroll(function(){
+		$(".quarter").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
+	});
+	*/
+  });
+  </script>
 </head>
 <body>
 
-<h1>Welcome to jQuery UI!</h1>
+<div id="ART_HIST220" title="ART_HIST 220: Introduction to African Art" style="display:none">
+		<p>Instructor: L. Wilson<br><br>
+		This survey course examines the diverse art and architecture of Africa from the 15th century to the present. We will engage critically with how the study of African art has developed as we consider issues including the influence of cross-cultural interactions.
+		<br>
+		<br>
+		Art History 200-Level Course Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.arthistory.northwestern.edu/resources/documents/AH220.pdf" target="_blank">Course Page</a></p>
+</div>	
+<div id="CHEM101" title="CHEM 101: General Chemistry" style="display:none">
+		<p>Instructor: Hupp<br><br>
+		Descriptive chemistry, elements and compounds; basic chemical calculations, mole problems, stoichiometry, and solution concentrations; gas laws; thermochemistry; quantum theory and electronic structure of atoms; periodic properties of the elements; nuclear chemistry; chemical bonding. With laboratory.
+		<br>
+		<br>
+		Chemistry Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.chemistry.northwestern.edu/undergraduate/courses.html" target="_blank">Course Page</a></p>
+</div>		
+<div id="ECON201" title="ECON 201: Intro to Macroeconomics" style="display:none">
+		<p>Instructor: R. Walker<br><br>
+		Scarcity and choice; elements of demand and supply, determinants of aggregate output, employment, inflation, growth, and international balance of payments.
+		<br>
+		<br>
+		Economics Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.econ.northwestern.edu/classes/undergrad.html" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS101" title="EECS 101: An Intro to Computer Science for Everyone" style="display:none">
+		<p>Instructor: H. Zhang<br><br>
+		The primary goal of this course is to explore the whats, whys, and hows of computer science. Topics to be covered include the theory of computation (what computers can compute), algorithms for efficient computation (what to tell a computer to compute), programming languages (how to tell a computer what to compute), artificial intelligence (how your computer can do things your brain does), computational biology (how DNA-based biological systems are like programs), computer systems (e.g., how computers work together in networks like the Internet), and human computer interaction.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-101" target="_blank">Course Page</a></p>
+</div>		
+<div id="EECS110" title="EECS 110: Intro to Computer Programming" style="display:none">
+		<p>Instructors: Tumblin (Fall), Kuzmanovic (Spring)<br><br>
+		Introduction to programming practice using a modern programming language. Analysis and formulation of problems for computer solution. Systematic design, construction, and testing of programs. Substantial programming assignments. This is an introductory programming course that is not part of the major. It provides an introduction to programming for those that can benefit from becoming better programmers, but without committing to the major student's version of the course. Fall is offered in C; Winter and Spring are offered in Python. See professor's website for an updated syllabus.
+		<br>
+		<br>
+		Prerequisites: None<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-110" target="_blank">Course Page</a></p>
+</div>
+<div id="EECS111" title="EECS 111: Fundamentals of Computer Programming I" style="display:none">
+		<p>Instructor: Horswill<br><br>
+		This is an introductory course on the fundamentals of computer programming. I see this class as an opportunity for you, the student, to see what computer programming is all about and (more importantly) to see whether you want to spend the next few years doing more of it. This course will include weekly programming projects, readings, a midterm, and final examinations. Class participation is not optional.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-111" target="_blank">Course Page</a></p>
+</div>		
+<div id="EECS211" title="EECS 211: Fundamentals of Computer Programming II" style="display:none">
+		<p>Instructor: Henschen<br><br>
+		Object-oriented programming, classes and data hiding, dynamic object construction and destruction, derived classes and inheritance, virtual functions; functions, call by value/reference, overloading; abstract data types; standard template libraries; exception handling; introduction to UNIX, file processing, process management.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 110 or EECS 111
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-211" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS212" title="EECS 212: Discrete Mathematics for Computer Science" style="display:none">
+		<p>Instructor: Rahimi<br><br>
+		This course will discuss fundamental concepts and tools in discrete mathematics with emphasis on their applications to computer science. Example topics include logic and Boolean circuits; sets, functions, relations, databases, and finite automata; deterministic algorithms and randomized algorithms; analysis techniques based on counting methods and recurrence equations; trees and more general graphs.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 110 or EECS 111, and MATH 230
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-212" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS213" title="EECS 213: Intro to Computer Systems" style="display:none">
+		<p>Instructor: Hardavellas (Fall), Dinda (Spring)<br><br>
+		This course has four purposes: (1) to learn about the hierarchy of abstractions and implementations that comprise a modern computer system; (2) to demystify the machine and the tools that we use to program it; (3) to come up to speed on systems programming in C in the Unix environment; (4) to prepare students for upper-level systems courses.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 211 or EECS 230
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-213" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS214" title="EECS 214: Data Structures and Data Management" style="display:none">
+		<p>Instructor: Rahimi<br><br>
+		The design, implementation, and analysis of abstract data types, data structures and their algorithms. Topics include: data and procedural abstraction, linked lists, stacks, queues, binary trees, searching, and sorting. Required for computer science majors.
+		<br>
+		<br>
+		EECS Core Requirement<br><br>
+		Prerequisites: EECS 211 or EECS 231
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-214" target="_blank">Course Page</a></p>
+</div>	
+<div id="EECS330" title="EECS 330: Human Computer Interaction" style="display:none">
+		<p>Instructor: Horn/Zhang<br><br>
+		 Introduction to human-computer interaction and the design of systems that work for people and their organizations. The goal is to understand the manner in which humans interact with, and use, their computers for productive work. The course focus is on the interface as designed artifact. The interface is a design problem without a single "correct" solution but which has many "good" solutions and a plethora of "bad" solutions. Class discussion centers on what makes an interface good and proven techniques for designing interfaces that meet human needs.
+		<br>
+		<br>
+		EECS Breadth/Depth - Interfaces<br><br>
+		Prerequisites: Prior Programming Experience
+		<br><br>
+		<a href="http://eecs.northwestern.edu/eecs-330" target="_blank">Course Page</a></p>
+</div>
+<div id="ECON201" title="ECON 201: Intro to Macroeconomics" style="display:none">
+		<p>Instructor: R. Walker<br><br>
+		Scarcity and choice; elements of demand and supply, determinants of aggregate output, employment, inflation, growth, and international balance of payments.
+		<br>
+		<br>
+		Economics Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.econ.northwestern.edu/classes/undergrad.html" target="_blank">Course Page</a></p>
+</div>
+<div id="ENGLISH206" title="ENGLISH 206: Reading & Writing Poetry" style="display:none">
+		<p>Instructor: M. Kinzie<br><br>
+		An introduction to the major forms of poetry in English from the dual perspective of the poet-critic. Creative work will be assigned in the form of poems and revisions; analytic writing will be assigned in the form of critiques of other members’ poems. A scansion exercise will be given early on. All of these exercises, creative and expository, as well as the required readings from the Anthology, are designed to help students increase their understanding of poetry rapidly and profoundly; the more wholehearted students’ participation, the more they will learn from the course. 
+		<br>
+		<br>
+		English Writing Prerequisite<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.english.northwestern.edu/courses/documents/EnglishNotes.pdf" target="_blank">Course Page</a></p>
+</div>		
+<div id="MATH212" title="MATH 212: Single Variable Calculus I" style="display:none">
+		<p>Instructor: Belt<br><br>
+		This calculus course covers differentiation and integration of functions of one variable, and concludes with a brief discussion of infinite series. Calculus is fundamental to many scientific disciplines including physics, engineering, and economics.
+		<br>
+		<br>
+		Mathematics Prerequisite<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="https://math.northwestern.edu/courses/schedule_13-14/fall.html" target="_blank">Course Page</a></p>
+</div>		 
+<div id="POLI_SCI201" title="POLI_SCI 201: Introduction to Political Theory" style="display:none">
+		<p>Instructor: Storey<br><br>
+		An introduction to the study of politics and political theory through the thought and texts of some of the most important western political theorists. A study of the ideas of some of the major political theorists from the ancient Greeks to the 20th Century. 
+		<br>
+		<br>
+		Political Science Core Requirement<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.polisci.northwestern.edu/undergraduate/documents/YearlyPlanner2013-14PUBLICVERSION.pdf" target="_blank">Course Page</a></p>
+</div>	
+<div id="STAT201" title="STAT 201: Statistics and Public Policy" style="display:none">
+		<p>Instructor: H. Jiang<br><br>
+		Basic statistical concepts and techniques introduced via case studies of interesting public policy issues. The cases illustrate methods of data collection and analysis.
+		<br>
+		<br>
+		Statistics Prerequisite<br><br>
+		Prerequisites: none
+		<br><br>
+		<a href="http://www.statistics.northwestern.edu/undergraduate/full-course-list.html" target="_blank">Course Page</a></p>
+</div>		 
 
-<div class="ui-widget">
-	<p>This page demonstrates the widgets you downloaded using the theme you selected in the download builder. We've included and linked to minified versions of <a href="js/jquery-1.10.2.js">jQuery</a>, your personalized copy of <a href="js/jquery-ui-.custom.min.js">jQuery UI (js/jquery-ui-.custom.min.js)</a>, and <a href="css//jquery-ui-.custom.min.css">css//jquery-ui-.custom.min.css</a> which imports the entire jQuery UI CSS Framework. You can choose to link a subset of the CSS Framework depending on your needs. </p>
-	<p>You've downloaded components and a theme that are compatible with jQuery 1.6+. Please make sure you are using jQuery 1.6+ in your production environment.</p>
+					
+<div class="ui-widget ui-helper-clearfix">
+
+
+ <div class="navigation ui-widget ui-helper-clearfix">
+	<span class="nav-left">
+		<h2 class="ui-widget-header page-header" >DegreeReq</h2>
+	</span>
+	<span id="reset-container">
+		<button class="ui-button ui-widget-header" id="reset-button" title="Reset Schedule and Course Filters" >Reset All</button>
+	</span>
 </div>
 
-<h1>YOUR COMPONENTS:</h1>
 
-
-<!-- Accordion -->
-<h2 class="demoHeaders">Accordion</h2>
-<div id="accordion">
-	<h3>First</h3>
-	<div>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</div>
-	<h3>Second</h3>
-	<div>Phasellus mattis tincidunt nibh.</div>
-	<h3>Third</h3>
-	<div>Nam dui erat, auctor a, dignissim quis.</div>
-</div>
-
-
-
-<!-- Autocomplete -->
-<h2 class="demoHeaders">Autocomplete</h2>
-<div>
-	<input id="autocomplete" title="type &quot;a&quot;">
-</div>
-
-
-
-<!-- Button -->
-<h2 class="demoHeaders">Button</h2>
-<button id="button">A button element</button>
-<form style="margin-top: 1em;">
-	<div id="radioset">
-		<input type="radio" id="radio1" name="radio"><label for="radio1">Choice 1</label>
-		<input type="radio" id="radio2" name="radio" checked="checked"><label for="radio2">Choice 2</label>
-		<input type="radio" id="radio3" name="radio"><label for="radio3">Choice 3</label>
-	</div>
-</form>
-
-
-
-<!-- Tabs -->
-<h2 class="demoHeaders">Tabs</h2>
 <div id="tabs">
-	<ul>
-		<li><a href="#tabs-1">First</a></li>
-		<li><a href="#tabs-2">Second</a></li>
-		<li><a href="#tabs-3">Third</a></li>
-	</ul>
-	<div id="tabs-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-	<div id="tabs-2">Phasellus mattis tincidunt nibh. Cras orci urna, blandit id, pretium vel, aliquet ornare, felis. Maecenas scelerisque sem non nisl. Fusce sed lorem in enim dictum bibendum.</div>
-	<div id="tabs-3">Nam dui erat, auctor a, dignissim quis, sollicitudin eu, felis. Pellentesque nisi urna, interdum eget, sagittis et, consequat vestibulum, lacus. Mauris porttitor ullamcorper augue.</div>
-</div>
+  <ul class="tab-background">
+    <li id="tab-item1" tabindex="1"><a href="#tabs-1" >Available Classes</a></li>
+    <li id="tab-item2" tabindex="2"><a href="#tabs-2" >Degree Progress</a></li>
+  </ul>
+<div id = "tabs-1">
 
-
-
-<!-- Dialog NOTE: Dialog is not generated by UI in this demo so it can be visually styled in themeroller-->
-<h2 class="demoHeaders">Dialog</h2>
-<p><a href="#" id="dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Open Dialog</a></p>
-
-<h2 class="demoHeaders">Overlay and Shadow Classes <em>(not currently used in UI widgets)</em></h2>
-<div style="position: relative; width: 96%; height: 200px; padding:1% 2%; overflow:hidden;" class="fakewindowcontain">
-	<p>Lorem ipsum dolor sit amet,  Nulla nec tortor. Donec id elit quis purus consectetur consequat. </p><p>Nam congue semper tellus. Sed erat dolor, dapibus sit amet, venenatis ornare, ultrices ut, nisi. Aliquam ante. Suspendisse scelerisque dui nec velit. Duis augue augue, gravida euismod, vulputate ac, facilisis id, sem. Morbi in orci. </p><p>Nulla purus lacus, pulvinar vel, malesuada ac, mattis nec, quam. Nam molestie scelerisque quam. Nullam feugiat cursus lacus.orem ipsum dolor sit amet, consectetur adipiscing elit. Donec libero risus, commodo vitae, pharetra mollis, posuere eu, pede. Nulla nec tortor. Donec id elit quis purus consectetur consequat. </p><p>Nam congue semper tellus. Sed erat dolor, dapibus sit amet, venenatis ornare, ultrices ut, nisi. Aliquam ante. Suspendisse scelerisque dui nec velit. Duis augue augue, gravida euismod, vulputate ac, facilisis id, sem. Morbi in orci. Nulla purus lacus, pulvinar vel, malesuada ac, mattis nec, quam. Nam molestie scelerisque quam. </p><p>Nullam feugiat cursus lacus.orem ipsum dolor sit amet, consectetur adipiscing elit. Donec libero risus, commodo vitae, pharetra mollis, posuere eu, pede. Nulla nec tortor. Donec id elit quis purus consectetur consequat. Nam congue semper tellus. Sed erat dolor, dapibus sit amet, venenatis ornare, ultrices ut, nisi. Aliquam ante. </p><p>Suspendisse scelerisque dui nec velit. Duis augue augue, gravida euismod, vulputate ac, facilisis id, sem. Morbi in orci. Nulla purus lacus, pulvinar vel, malesuada ac, mattis nec, quam. Nam molestie scelerisque quam. Nullam feugiat cursus lacus.orem ipsum dolor sit amet, consectetur adipiscing elit. Donec libero risus, commodo vitae, pharetra mollis, posuere eu, pede. Nulla nec tortor. Donec id elit quis purus consectetur consequat. Nam congue semper tellus. Sed erat dolor, dapibus sit amet, venenatis ornare, ultrices ut, nisi. </p>
-
-	<!-- ui-dialog -->
-	<div class="ui-overlay"><div class="ui-widget-overlay"></div><div class="ui-widget-shadow ui-corner-all" style="width: 302px; height: 152px; position: absolute; left: 50px; top: 30px;"></div></div>
-	<div style="position: absolute; width: 280px; height: 130px;left: 50px; top: 30px; padding: 10px;" class="ui-widget ui-widget-content ui-corner-all">
-		<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-		</div>
-	</div>
+ <div class="navigation ui-widget ui-helper-clearfix">
+	<span>
+		
+		<span class="ui-widget"><label for="subject" id="search-label">Subject:</label><input id="subject" placeholder="Select a Subject" tabindex="3" ></span>
+		<button class="ui-button ui-widget-header" id="submit-subject">Submit</button>
+		<span class="ui-widget"><label for="toggle-fall17" id="toggle-label">Quarters:</label></span>
+		<span class="toggles">
+			<button class="ui-button ui-widget-header" id="toggle-fall17" title="Toggle Fall 2017 Classes">Fall 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-winter17" title="Toggle Winter 2017 Classes">Winter 2017</button>
+			<button class="ui-button ui-widget-header" id="toggle-spring17" title="Toggle Spring 2017 Classes">Spring 2017</button>
+		</span>
+		<span><h2 class="ui-widget-header page-header" id="subject-header" ><span>All</span></h2></span>
+		
+	</span>
 
 </div>
 
-<!-- ui-dialog -->
-<div id="dialog" title="Dialog Title">
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-</div>
 
-
-
-<h2 class="demoHeaders">Framework Icons (content color preview)</h2>
-<ul id="icons" class="ui-widget ui-helper-clearfix">
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-n"><span class="ui-icon ui-icon-carat-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-ne"><span class="ui-icon ui-icon-carat-1-ne"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-e"><span class="ui-icon ui-icon-carat-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-se"><span class="ui-icon ui-icon-carat-1-se"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-s"><span class="ui-icon ui-icon-carat-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-sw"><span class="ui-icon ui-icon-carat-1-sw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-w"><span class="ui-icon ui-icon-carat-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-1-nw"><span class="ui-icon ui-icon-carat-1-nw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-2-n-s"><span class="ui-icon ui-icon-carat-2-n-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-carat-2-e-w"><span class="ui-icon ui-icon-carat-2-e-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-n"><span class="ui-icon ui-icon-triangle-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-ne"><span class="ui-icon ui-icon-triangle-1-ne"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-e"><span class="ui-icon ui-icon-triangle-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-se"><span class="ui-icon ui-icon-triangle-1-se"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-s"><span class="ui-icon ui-icon-triangle-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-sw"><span class="ui-icon ui-icon-triangle-1-sw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-w"><span class="ui-icon ui-icon-triangle-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-1-nw"><span class="ui-icon ui-icon-triangle-1-nw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-2-n-s"><span class="ui-icon ui-icon-triangle-2-n-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-triangle-2-e-w"><span class="ui-icon ui-icon-triangle-2-e-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-n"><span class="ui-icon ui-icon-arrow-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-ne"><span class="ui-icon ui-icon-arrow-1-ne"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-e"><span class="ui-icon ui-icon-arrow-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-se"><span class="ui-icon ui-icon-arrow-1-se"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-s"><span class="ui-icon ui-icon-arrow-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-sw"><span class="ui-icon ui-icon-arrow-1-sw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-w"><span class="ui-icon ui-icon-arrow-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-nw"><span class="ui-icon ui-icon-arrow-1-nw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-2-n-s"><span class="ui-icon ui-icon-arrow-2-n-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-2-ne-sw"><span class="ui-icon ui-icon-arrow-2-ne-sw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-2-e-w"><span class="ui-icon ui-icon-arrow-2-e-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-2-se-nw"><span class="ui-icon ui-icon-arrow-2-se-nw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowstop-1-n"><span class="ui-icon ui-icon-arrowstop-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowstop-1-e"><span class="ui-icon ui-icon-arrowstop-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowstop-1-s"><span class="ui-icon ui-icon-arrowstop-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowstop-1-w"><span class="ui-icon ui-icon-arrowstop-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-n"><span class="ui-icon ui-icon-arrowthick-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-ne"><span class="ui-icon ui-icon-arrowthick-1-ne"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-e"><span class="ui-icon ui-icon-arrowthick-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-se"><span class="ui-icon ui-icon-arrowthick-1-se"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-s"><span class="ui-icon ui-icon-arrowthick-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-sw"><span class="ui-icon ui-icon-arrowthick-1-sw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-w"><span class="ui-icon ui-icon-arrowthick-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-1-nw"><span class="ui-icon ui-icon-arrowthick-1-nw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-2-n-s"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-2-ne-sw"><span class="ui-icon ui-icon-arrowthick-2-ne-sw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-2-e-w"><span class="ui-icon ui-icon-arrowthick-2-e-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthick-2-se-nw"><span class="ui-icon ui-icon-arrowthick-2-se-nw"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthickstop-1-n"><span class="ui-icon ui-icon-arrowthickstop-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthickstop-1-e"><span class="ui-icon ui-icon-arrowthickstop-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthickstop-1-s"><span class="ui-icon ui-icon-arrowthickstop-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowthickstop-1-w"><span class="ui-icon ui-icon-arrowthickstop-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturnthick-1-w"><span class="ui-icon ui-icon-arrowreturnthick-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturnthick-1-n"><span class="ui-icon ui-icon-arrowreturnthick-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturnthick-1-e"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturnthick-1-s"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturn-1-w"><span class="ui-icon ui-icon-arrowreturn-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturn-1-n"><span class="ui-icon ui-icon-arrowreturn-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturn-1-e"><span class="ui-icon ui-icon-arrowreturn-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowreturn-1-s"><span class="ui-icon ui-icon-arrowreturn-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowrefresh-1-w"><span class="ui-icon ui-icon-arrowrefresh-1-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowrefresh-1-n"><span class="ui-icon ui-icon-arrowrefresh-1-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowrefresh-1-e"><span class="ui-icon ui-icon-arrowrefresh-1-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrowrefresh-1-s"><span class="ui-icon ui-icon-arrowrefresh-1-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-4"><span class="ui-icon ui-icon-arrow-4"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-4-diag"><span class="ui-icon ui-icon-arrow-4-diag"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-extlink"><span class="ui-icon ui-icon-extlink"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-newwin"><span class="ui-icon ui-icon-newwin"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-refresh"><span class="ui-icon ui-icon-refresh"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-shuffle"><span class="ui-icon ui-icon-shuffle"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-transfer-e-w"><span class="ui-icon ui-icon-transfer-e-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-transferthick-e-w"><span class="ui-icon ui-icon-transferthick-e-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-folder-collapsed"><span class="ui-icon ui-icon-folder-collapsed"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-folder-open"><span class="ui-icon ui-icon-folder-open"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-document"><span class="ui-icon ui-icon-document"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-document-b"><span class="ui-icon ui-icon-document-b"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-note"><span class="ui-icon ui-icon-note"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-mail-closed"><span class="ui-icon ui-icon-mail-closed"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-mail-open"><span class="ui-icon ui-icon-mail-open"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-suitcase"><span class="ui-icon ui-icon-suitcase"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-comment"><span class="ui-icon ui-icon-comment"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-person"><span class="ui-icon ui-icon-person"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-print"><span class="ui-icon ui-icon-print"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-trash"><span class="ui-icon ui-icon-trash"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-locked"><span class="ui-icon ui-icon-locked"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-unlocked"><span class="ui-icon ui-icon-unlocked"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-bookmark"><span class="ui-icon ui-icon-bookmark"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-tag"><span class="ui-icon ui-icon-tag"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-home"><span class="ui-icon ui-icon-home"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-flag"><span class="ui-icon ui-icon-flag"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-calculator"><span class="ui-icon ui-icon-calculator"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-cart"><span class="ui-icon ui-icon-cart"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-pencil"><span class="ui-icon ui-icon-pencil"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-clock"><span class="ui-icon ui-icon-clock"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-disk"><span class="ui-icon ui-icon-disk"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-calendar"><span class="ui-icon ui-icon-calendar"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-zoomin"><span class="ui-icon ui-icon-zoomin"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-zoomout"><span class="ui-icon ui-icon-zoomout"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-search"><span class="ui-icon ui-icon-search"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-wrench"><span class="ui-icon ui-icon-wrench"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-gear"><span class="ui-icon ui-icon-gear"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-heart"><span class="ui-icon ui-icon-heart"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-star"><span class="ui-icon ui-icon-star"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-link"><span class="ui-icon ui-icon-link"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-cancel"><span class="ui-icon ui-icon-cancel"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-plus"><span class="ui-icon ui-icon-plus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-plusthick"><span class="ui-icon ui-icon-plusthick"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-minus"><span class="ui-icon ui-icon-minus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-minusthick"><span class="ui-icon ui-icon-minusthick"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-closethick"><span class="ui-icon ui-icon-closethick"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-key"><span class="ui-icon ui-icon-key"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-lightbulb"><span class="ui-icon ui-icon-lightbulb"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-scissors"><span class="ui-icon ui-icon-scissors"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-clipboard"><span class="ui-icon ui-icon-clipboard"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-copy"><span class="ui-icon ui-icon-copy"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-contact"><span class="ui-icon ui-icon-contact"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-image"><span class="ui-icon ui-icon-image"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-video"><span class="ui-icon ui-icon-video"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-script"><span class="ui-icon ui-icon-script"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-alert"><span class="ui-icon ui-icon-alert"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-info"><span class="ui-icon ui-icon-info"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-notice"><span class="ui-icon ui-icon-notice"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-help"><span class="ui-icon ui-icon-help"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-check"><span class="ui-icon ui-icon-check"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-bullet"><span class="ui-icon ui-icon-bullet"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-radio-off"><span class="ui-icon ui-icon-radio-off"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-radio-on"><span class="ui-icon ui-icon-radio-on"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-pin-w"><span class="ui-icon ui-icon-pin-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-pin-s"><span class="ui-icon ui-icon-pin-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-play"><span class="ui-icon ui-icon-play"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-pause"><span class="ui-icon ui-icon-pause"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-seek-next"><span class="ui-icon ui-icon-seek-next"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-seek-prev"><span class="ui-icon ui-icon-seek-prev"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-seek-end"><span class="ui-icon ui-icon-seek-end"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-seek-first"><span class="ui-icon ui-icon-seek-first"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-stop"><span class="ui-icon ui-icon-stop"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-eject"><span class="ui-icon ui-icon-eject"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-volume-off"><span class="ui-icon ui-icon-volume-off"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-volume-on"><span class="ui-icon ui-icon-volume-on"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-power"><span class="ui-icon ui-icon-power"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-signal-diag"><span class="ui-icon ui-icon-signal-diag"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-signal"><span class="ui-icon ui-icon-signal"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-battery-0"><span class="ui-icon ui-icon-battery-0"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-battery-1"><span class="ui-icon ui-icon-battery-1"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-battery-2"><span class="ui-icon ui-icon-battery-2"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-battery-3"><span class="ui-icon ui-icon-battery-3"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-plus"><span class="ui-icon ui-icon-circle-plus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-minus"><span class="ui-icon ui-icon-circle-minus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-close"><span class="ui-icon ui-icon-circle-close"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-triangle-e"><span class="ui-icon ui-icon-circle-triangle-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-triangle-s"><span class="ui-icon ui-icon-circle-triangle-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-triangle-w"><span class="ui-icon ui-icon-circle-triangle-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-triangle-n"><span class="ui-icon ui-icon-circle-triangle-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-arrow-e"><span class="ui-icon ui-icon-circle-arrow-e"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-arrow-s"><span class="ui-icon ui-icon-circle-arrow-s"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-arrow-w"><span class="ui-icon ui-icon-circle-arrow-w"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-arrow-n"><span class="ui-icon ui-icon-circle-arrow-n"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-zoomin"><span class="ui-icon ui-icon-circle-zoomin"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-zoomout"><span class="ui-icon ui-icon-circle-zoomout"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circle-check"><span class="ui-icon ui-icon-circle-check"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circlesmall-plus"><span class="ui-icon ui-icon-circlesmall-plus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circlesmall-minus"><span class="ui-icon ui-icon-circlesmall-minus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-circlesmall-close"><span class="ui-icon ui-icon-circlesmall-close"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-squaresmall-plus"><span class="ui-icon ui-icon-squaresmall-plus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-squaresmall-minus"><span class="ui-icon ui-icon-squaresmall-minus"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-squaresmall-close"><span class="ui-icon ui-icon-squaresmall-close"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-grip-dotted-vertical"><span class="ui-icon ui-icon-grip-dotted-vertical"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-grip-dotted-horizontal"><span class="ui-icon ui-icon-grip-dotted-horizontal"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-grip-solid-vertical"><span class="ui-icon ui-icon-grip-solid-vertical"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-grip-solid-horizontal"><span class="ui-icon ui-icon-grip-solid-horizontal"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-gripsmall-diagonal-se"><span class="ui-icon ui-icon-gripsmall-diagonal-se"></span></li>
-	<li class="ui-state-default ui-corner-all" title=".ui-icon-grip-diagonal-se"><span class="ui-icon ui-icon-grip-diagonal-se"></span></li>
+<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
+	<li class="ui-widget-content ui-corner-tr fall core ART_HIST" id="ART_HIST220">
+		<h5 class="ui-widget-header">ART_HIST 220</h5>
+		<p>Introduction to African Art<br><br>
+		Fall 2017<br>
+		TuTh 9:30-10:50</p>
+		<a id="ART_HIST220" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall core CHEM" id="CHEM101">
+		<h5 class="ui-widget-header">CHEM 101</h5>
+		<p>General<br> Chemistry<br><br>
+		Fall 2017<br>
+		MTuW 9:00-9:50</p>
+		<a id="CHEM101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall winter core ECON" id="ECON201">
+		<h5 class="ui-widget-header">ECON 201</h5>
+		<p>Intro to Macroeconomics<br><br>
+		Fall/Winter 2017<br>
+		MWF 11:00-11:50</p>
+		<a id="ECON201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+    <li class="ui-widget-content ui-corner-tr fall core EECS" id="EECS101">
+		<h5 class="ui-widget-header">EECS 101</h5>
+		<p>An Intro to Computer Science<br><br>
+		Fall 2017<br>
+		MWF 3:00-3:50</p>
+		<a id="EECS101" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall spring EECS" id="EECS110">
+		<h5 class="ui-widget-header">EECS 110</h5>
+		<p>Intro to Computer Programming<br><br>
+		Fall/Spring 2017<br>
+		MWF 12:00-12:50</p>
+		<a id="EECS110" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li> 
+	<li class="ui-widget-content ui-corner-tr fall winter core EECS" id="EECS111">
+		<h5 class="ui-widget-header">EECS 111</h5>
+		<p>Fundamentals of Programming I<br><br>
+			Fall/Winter 2017<br>
+			MWF 11:00-11:50</p>
+		<a id="EECS111" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS211">
+		<h5 class="ui-widget-header">EECS 211</h5>
+		<p>Fundamentals of Programming II<br><br>
+		Spring 2017<br>
+		MTuWF 1:00-1:50</p>
+		<a id="EECS211" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr winter core EECS" id="EECS212">
+		<h5 class="ui-widget-header">EECS 212</h5>
+		<p>Discrete Mathematics for CS<br><br>
+			Winter 2017<br>
+			MWF 11:00-11:50</p>
+		<a id="EECS212" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr fall spring core EECS" id="EECS213">
+		<h5 class="ui-widget-header">EECS 213</h5>
+		<p>Intro to Computer Systems<br><br>
+			Fall/Spring 2017<br>
+			TuTh 2:00-3:20</p>
+		<a id="EECS213" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core EECS" id="EECS214">
+		<h5 class="ui-widget-header">EECS 214</h5>
+		<p>Data Structures and Data Management<br><br>
+			Spring 2017<br>
+			MWF 11:00-11:50</p>
+		<a id="EECS214" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr winter breadth depth EECS" id="EECS330">
+		<h5 class="ui-widget-header">EECS 330</h5>
+		<p>Human Computer Interaction<br><br>
+			Winter 2017<br>
+			MWF 1:00-1:50</p>
+		<a id="EECS330" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr winter spring core ENGLISH" id="ENGLISH206">
+		<h5 class="ui-widget-header">ENGLISH 206</h5>
+		<p>Reading & Writing Poetry<br><br>
+		Winter/Spring 2017<br>
+		MWF 2:00-2:50</p>
+		<a id="ENGLISH206" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core MATH" id="MATH212">
+		<h5 class="ui-widget-header">MATH 212</h5>
+		<p>Single Variable Calculus I<br><br>
+		Spring 2017<br>
+		MWF 3:00-3:50</p>
+		<a id="MATH212" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core POLI_SCI" id="POLI_SCI201">
+		<h5 class="ui-widget-header">POLI_SCI 201</h5>
+		<p>Introduction to Political Theory<br><br>
+		Spring 2017<br>
+		MWF 4:00-4:50</p>
+		<a id="POLI_SCI201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
+	<li class="ui-widget-content ui-corner-tr spring core STAT" id="STAT201">
+		<h5 class="ui-widget-header">STAT 201</h5>
+		<p>Statistics and Public Policy<br><br>
+		Spring 2017<br>
+		MWF 5:00-5:50</p>
+		<a id="STAT201" title="View Class Description" class="ui-icon ui-icon-zoomin">View Class Description</a>
+	</li>
 </ul>
 
-
-<!-- Slider -->
-<h2 class="demoHeaders">Slider</h2>
-<div id="slider"></div>
+</div>
 
 
 
-<!-- Datepicker -->
-<h2 class="demoHeaders">Datepicker</h2>
-<div id="datepicker"></div>
-
-
-
-<!-- Progressbar -->
-<h2 class="demoHeaders">Progressbar</h2>
-<div id="progressbar"></div>
-
-
-<!-- Highlight / Error -->
-<h2 class="demoHeaders">Highlight / Error</h2>
-<div class="ui-widget">
-	<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Hey!</strong> Sample ui-state-highlight style.</p>
+<div id="tabs-2">
+    <h2 class="ui-widget-header page-header" >Degree Progress Report<br><p style="font-size:.75em;margin:0;">EECS (Weinberg)</p></h2>
+<div id="accordion">
+  <h3>Weinberg Distribution Requirements <span class="taking">(6 of 12 Courses Completed)</span></h3>
+  <div>
+	<div id="accordion2">
+	  <h3>Area I: Natural Sciences <span class="taking">(1 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Physics 135-1 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Area II: Formal Studies <span class="complete">(2 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Mathematics 300 - Completed!</li>
+			<li class="complete">One Credit - Mathematics 104 - Completed! </li>
+		</ul>
+	  </div>
+	  <h3>Area III: Social and Behavioural Sciences <span class="taking">(1 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Economics 201 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Area IV: Historical Studies <span class="taking">(1 of 2 Courses Completed, 1 Course Pending)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - History 201-1 - Completed!</li>
+			<li class="taking">One Credit - History 201-2 - Taking This Quarter</li>
+		</ul>
+	  </div>
+	  	  <h3>Area V: Ethics and Values <span class="needed">(0 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  	  <h3>Area VI: Literature and Fine Arts <span class="taking">(1 of 2 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - Slavic 201-2 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	</div>
+	</div>
+	<h3>Outside Requirements <span class="taking">(2 of 5 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+		<ul>
+			<li class="complete">MATH 220 (Differential Calculus of One Variable Functions) - Completed!</li>
+			<li class="complete">MATH 224 (Integral Calculus of One Variable Functions)- Completed!</li>
+			<li class="taking">MATH 230 - Taking This Quarter</li>
+			<li class="needed">MATH 240 - Needs to be Taken</li>
+			<li class="needed">STATS 210 or MATH 310-1 - Needs to be Taken</li>
+		</ul>
+	</div>
+	<h3>Core Courses <span class="taking">(4 of 6 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+		<ul id="core-class-progress">
+			<li class="needed"><a href="javascript:void(0)" id="EECS101">EECS 101</a> - Needs to be Taken</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS111">EECS 111</a> - Completed!</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS211">EECS 211</a> - Completed!</li>
+			<li class="taking"><a href="javascript:void(0)" id="EECS212">EECS 212</a> - Taking This Quarter</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS213">EECS 213</a> - Completed!</li>
+			<li class="complete"><a href="javascript:void(0)" id="EECS214">EECS 214</a> - Completed!</li>
+		</ul>
+	</div>
+	<h3>Breadth Areas <span class="taking">(2 of 5 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+		<ul>
+			<li class="needed">Theory - Needs to be Taken</li>
+			<li class="complete">Systems - EECS 321 - Completed!</li>
+			<li class="needed">Artificial Intelligence - Needs to be Taken</li>
+			<li class="taking">Interfaces - EECS 330 - Taking This Quarter</li>
+			<li class="complete">Software Development - EECS 395 - Completed!</li>
+		</ul>
+	</div>
+	<h3>Depth Areas <span class="taking">(5 of 15 Courses Completed, 1 Course Pending)</span></h3>
+	<div>
+	<div id="accordion3">
+	  <h3>Theory <span class="needed">(0 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Systems - <span class="complete">(3 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - EECS 321 - Completed!</li>
+			<li class="complete">One Credit - EECS 322 - Completed!</li>
+			<li class="complete">One Credit - EECS 343 - Completed!</li>
+		</ul>
+	  </div>
+	  <h3>Artificial Intelligence <span class="needed">(0 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  <h3>Interfaces <span class="taking">(0 of 3 Courses Completed, 1 Course Pending)</span></h3>
+	  <div>
+		<ul>
+			<li class="taking">One Credit - EECS 330 - Taking This Quarter</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	  	  <h3>Software Development <span class="taking">(2 of 3 Courses Completed)</span></h3>
+	  <div>
+		<ul>
+			<li class="complete">One Credit - EECS 395 - Completed!</li>
+			<li class="complete">One Credit - EECS 395 - Completed!</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
+	  </div>
+	</div>
+	</div>
+	<h3>Project Requirement <span class="needed">(0 of 2 Courses Completed)</span></h3>
+	<div>
+		<ul>
+			<li class="needed">One Credit - Needs to be Taken</li>
+			<li class="needed">One Credit - Needs to be Taken</li>
+		</ul>
 	</div>
 </div>
-<br>
-<div class="ui-widget">
-	<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-		<strong>Alert:</strong> Sample ui-state-error style.</p>
+  </div>
+</div>
+
+<div class="schedule">
+	<div id="fall17" class="ui-widget-content ui-state-default quarter">
+	  <h4 class="ui-widget-header">Fall 2017</h4>
+	</div>
+	<div id="winter17" class="ui-widget-content ui-state-default quarter">
+	  <h4 class="ui-widget-header">Winter 2017</h4>
+	  <div class="instructions">
+		Drag classes onto your schedule
+	  </div>
+	</div> 
+	<div id="spring17" class="ui-widget-content ui-state-default quarter">
+	  <h4 class="ui-widget-header">Spring 2017</h4>
 	</div>
 </div>
+ 
+</div>
+
 
 </body>
 </html>
