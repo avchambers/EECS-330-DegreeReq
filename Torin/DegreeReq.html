@@ -265,7 +265,9 @@
     };
 	
 	$( "#help-button" ).click(function() {
-      $( "#help-dia" ).dialog();
+      $( "#help-dia" ).dialog({
+      	width:'auto'
+      });
     });
     
  
@@ -1071,8 +1073,8 @@
  
 </div>
 
-<div id="help-dia">
-<p>This is help.</p>
+<div id="help-dia" style="display:none">
+<img src="http://s30.postimg.org/5epfftsu9/tutorial.png">
 </div>
 
 </body>
